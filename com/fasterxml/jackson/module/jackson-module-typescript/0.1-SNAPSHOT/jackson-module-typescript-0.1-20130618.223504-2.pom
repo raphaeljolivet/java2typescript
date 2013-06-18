@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion> 
+  
+  <groupId>com.fasterxml.jackson.module</groupId>
+  <artifactId>jackson-module-typescript</artifactId>
+  <name>jackson-module-typescript</name>
+  <version>0.1-SNAPSHOT</version>
+  <description>
+     Extension Module for Jackson to provide generation of TypeScript definition file from Java class definition 
+  </description>
+  <developers>
+        <developer>
+            <id>raphael.jolivet</id>
+            <name>Raphael Jolivet</name>
+            <email>raphael.jolivet@gmail.com</email>
+        </developer>
+  </developers>
+  <properties>
+    <jackson.core.version>2.2.2</jackson.core.version>
+    <github.global.server>github</github.global.server>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${jackson.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.core.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.core.version}</version>
+    </dependency>
+	
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    
+  </dependencies>
+
+   <distributionManagement>
+    <repository>
+        <id>github</id>
+        <name>GitHub ${project.artifactId} Repository</name>
+        <url>https://raw.github.com/raphaeljolivet/${project.artifactId}/mvn-repo</url>
+    </repository>
+  </distributionManagement>
+
+  <build>
+    <plugins>
+
+    <plugin>
+        <groupId>com.github.github</groupId>
+            <artifactId>site-maven-plugin</artifactId>
+            <version>0.7</version>
+            <configuration>
+                <message>Maven artifacts for ${project.version}</message>  
+                <noJekyll>true</noJekyll>                                  
+                <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> 
+                <branch>refs/heads/mvn-repo</branch>                       
+                <includes><include>**/*</include></includes>
+                <repositoryName>${project.artifactId}</repositoryName>      
+                <repositoryOwner>raphaeljolivet</repositoryOwner>   
+            </configuration>
+            <executions>
+              <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+              <execution>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+                <phase>deploy</phase>
+              </execution>
+            </executions>
+        </plugin>
+
+        <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.7</version>
+            <configuration>
+                <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
+</project>

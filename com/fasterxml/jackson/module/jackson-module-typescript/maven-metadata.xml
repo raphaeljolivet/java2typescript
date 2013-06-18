@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.fasterxml.jackson.module</groupId>
+  <artifactId>jackson-module-typescript</artifactId>
+  <versioning>
+    <versions>
+      <version>0.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20130618223948</lastUpdated>
+  </versioning>
+</metadata>
