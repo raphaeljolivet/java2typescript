@@ -35,6 +35,35 @@ Use the class **com.fasterxml.jackson.module.typescript.DefinitionGenerator** li
 	
 ```
 
+Example output
+--------------
+
+```typescript
+
+module MyModule {
+
+export enum MyEnum {
+    VAL1,
+    VAL2,
+    VAL3,
+}
+
+export interface TestClass {
+    aString: string;
+    aBoolean: bool;
+    aInt: number;
+    aFloat: number;
+    stringArray: string[];
+    map: { [key: string ]: bool;};
+    recursive: TestClass;
+    recursiveArray: TestClass[];
+    aEnum: ChangedEnumName;
+}
+
+}
+```
+
+
 Interface / Class name
 ----------------------
 

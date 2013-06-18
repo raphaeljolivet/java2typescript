@@ -36,7 +36,7 @@ public class DefinitionGenerator {
 
 		for (Object typeObj : visitor.getNamedTypes().values()) {
 			if (moduleName != null) {
-				writer.write("export");
+				writer.write("export ");
 			}
 			((ANamedType) typeObj).writeDef(writer);
 			writer.write("\n\n");
