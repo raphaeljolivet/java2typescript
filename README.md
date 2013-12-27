@@ -74,6 +74,11 @@ Module name
 -----------
 The module name is optionnal. If null, the definition will be generated out of any module.
 
+Licence
+=======
+
+This module is licenced under [Apache v2.0 Licence](http://www.apache.org/licenses/LICENSE-2.0.html)
+
 
 Credits
 =======
