@@ -1,14 +1,11 @@
 package com.fasterxml.jackson.module.typescript.visitors;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
-import com.fasterxml.jackson.module.typescript.grammar.NullType;
+import com.fasterxml.jackson.module.typescript.grammar.AnyType;
 
-
-public class TSJsonAnyFormatVisitor extends BaseTSJsonFormatVisitor<NullType>
-		implements JsonAnyFormatVisitor {
-	public TSJsonAnyFormatVisitor(BaseTSJsonFormatVisitor parentHolder) {
+public class TSJsonAnyFormatVisitor extends ABaseTSJsonFormatVisitor<AnyType> implements JsonAnyFormatVisitor {
+	public TSJsonAnyFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = new NullType();
+		type = AnyType.getIntance();
 	}
-
 }

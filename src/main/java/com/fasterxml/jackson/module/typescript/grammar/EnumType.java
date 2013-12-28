@@ -7,7 +7,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnumType extends ANamedType {
+import com.fasterxml.jackson.module.typescript.grammar.base.AbstractNamedType;
+
+public class EnumType extends AbstractNamedType {
 
 	private List<String> values = new ArrayList<String>();
 

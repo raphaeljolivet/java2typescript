@@ -1,5 +1,7 @@
 package com.fasterxml.jackson.module.typescript;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -11,12 +13,17 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.typescript.grammar.Module;
 
 public class DefinitionGeneratorTest {
 
 	@JsonTypeName("ChangedEnumName")
 	static enum Enum {
 		VAL1, VAL2, VAL3
+	}
+
+	class GenericClass<T> {
+		public T someField;
 	}
 
 	class TestClass {
@@ -32,6 +39,14 @@ public class DefinitionGeneratorTest {
 		public ArrayList<String> stringArrayList;
 		public Collection<Boolean> booleanCollection;
 		public Enum _enum;
+
+		public String aMethod(boolean recParam, String param2) {
+			return "toto";
+		}
+	}
+
+	public class StringClass extends GenericClass<String> {
+
 	}
 
 	@Test
@@ -41,7 +56,13 @@ public class DefinitionGeneratorTest {
 		DefinitionGenerator generator = new DefinitionGenerator(mapper);
 		Writer out = new OutputStreamWriter(System.out);
 
-		generator.generateDefinition("ModuleName", out, TestClass.class);
+		Module module = generator.generateTypeScript(//
+				"modName", //
+				newArrayList(//
+						TestClass.class, //
+						StringClass.class));
+
+		module.write(out);
 
 		out.close();
 	}

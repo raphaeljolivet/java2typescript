@@ -1,23 +1,18 @@
 package com.fasterxml.jackson.module.typescript.visitors;
 
-import java.text.NumberFormat;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonIntegerFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNumberFormatVisitor;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 import com.fasterxml.jackson.module.typescript.grammar.NumberType;
-import com.fasterxml.jackson.module.typescript.grammar.StringType;
 
+public class TSJsonNumberFormatVisitor extends ABaseTSJsonFormatVisitor<NumberType> implements JsonNumberFormatVisitor,
+		JsonIntegerFormatVisitor {
 
-public class TSJsonNumberFormatVisitor extends BaseTSJsonFormatVisitor<NumberType>
-		implements JsonNumberFormatVisitor, JsonIntegerFormatVisitor {
-
-	
-	public TSJsonNumberFormatVisitor(BaseTSJsonFormatVisitor parentHolder) {
+	public TSJsonNumberFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = new NumberType();
+		type = NumberType.getIntance();
 	}
 
 	@Override
@@ -30,7 +25,7 @@ public class TSJsonNumberFormatVisitor extends BaseTSJsonFormatVisitor<NumberTyp
 
 	@Override
 	public void numberType(com.fasterxml.jackson.core.JsonParser.NumberType type) {
-		
+
 	}
 
 }

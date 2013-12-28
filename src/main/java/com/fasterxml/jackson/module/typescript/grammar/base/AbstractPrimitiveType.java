@@ -1,13 +1,13 @@
-package com.fasterxml.jackson.module.typescript.grammar;
+package com.fasterxml.jackson.module.typescript.grammar.base;
 
 import java.io.IOException;
 import java.io.Writer;
 
-abstract public class APrimitiveType extends AType {
-	
+abstract public class AbstractPrimitiveType extends AbstractType {
+
 	private String token;
-		
-	public APrimitiveType(String token) {
+
+	public AbstractPrimitiveType(String token) {
 		this.token = token;
 	}
 

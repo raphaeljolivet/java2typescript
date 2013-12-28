@@ -6,14 +6,11 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 import com.fasterxml.jackson.module.typescript.grammar.StringType;
 
+public class TSJsonStringFormatVisitor extends ABaseTSJsonFormatVisitor<StringType> implements JsonStringFormatVisitor {
 
-public class TSJsonStringFormatVisitor extends BaseTSJsonFormatVisitor<StringType>
-		implements JsonStringFormatVisitor {
-
-	
-	public TSJsonStringFormatVisitor(BaseTSJsonFormatVisitor parentHolder) {
+	public TSJsonStringFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = new StringType();
+		type = StringType.getIntance();
 	}
 
 	@Override

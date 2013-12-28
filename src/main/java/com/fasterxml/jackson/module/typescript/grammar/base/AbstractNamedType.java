@@ -1,14 +1,14 @@
-package com.fasterxml.jackson.module.typescript.grammar;
+package com.fasterxml.jackson.module.typescript.grammar.base;
 
 import java.io.IOException;
 import java.io.Writer;
 
 /** Type referenced by its name and capable of writing its own definition */
-abstract public class ANamedType extends AType {
+abstract public class AbstractNamedType extends AbstractType {
 
 	protected final String name;
 
-	public ANamedType(String className) {
+	public AbstractNamedType(String className) {
 		this.name = className;
 	}
 

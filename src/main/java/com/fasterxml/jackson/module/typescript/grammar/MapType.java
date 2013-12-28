@@ -3,9 +3,11 @@ package com.fasterxml.jackson.module.typescript.grammar;
 import java.io.IOException;
 import java.io.Writer;
 
-public class MapType extends AType {
-	private AType valueType;
-	private AType keyType;
+import com.fasterxml.jackson.module.typescript.grammar.base.AbstractType;
+
+public class MapType extends AbstractType {
+	private AbstractType valueType;
+	private AbstractType keyType;
 
 	public MapType() {
 	}
@@ -19,19 +21,19 @@ public class MapType extends AType {
 		writer.write(";}");
 	}
 
-	public AType getValueType() {
+	public AbstractType getValueType() {
 		return valueType;
 	}
 
-	public void setValueType(AType valueType) {
+	public void setValueType(AbstractType valueType) {
 		this.valueType = valueType;
 	}
 
-	public AType getKeyType() {
+	public AbstractType getKeyType() {
 		return keyType;
 	}
 
-	public void setKeyType(AType keyType) {
+	public void setKeyType(AbstractType keyType) {
 		this.keyType = keyType;
 	}
 

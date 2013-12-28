@@ -1,8 +1,16 @@
 package com.fasterxml.jackson.module.typescript.grammar;
 
-public class NullType extends APrimitiveType {
-	public NullType() {
-		super("Null");
+import com.fasterxml.jackson.module.typescript.grammar.base.AbstractPrimitiveType;
+
+public class NullType extends AbstractPrimitiveType {
+
+	static private NullType instance = new NullType();
+
+	static public NullType getIntance() {
+		return instance;
+	}
+
+	private NullType() {
+		super("null");
 	}
 }
-

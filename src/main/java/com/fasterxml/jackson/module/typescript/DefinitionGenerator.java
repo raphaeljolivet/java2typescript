@@ -1,14 +1,16 @@
 package com.fasterxml.jackson.module.typescript;
 
-import static java.lang.String.format;
+import java.util.Collection;
 
-import java.io.IOException;
-import java.io.Writer;
-
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.typescript.grammar.ANamedType;
+import com.fasterxml.jackson.module.typescript.grammar.Module;
 import com.fasterxml.jackson.module.typescript.visitors.TSJsonFormatVisitorWrapper;
 
+/**
+ * Main class that generates a TypeScript grammar tree (a Module), out of a
+ * class, together with a {@link ObjectMapper}
+ */
 public class DefinitionGenerator {
 
 	private final ObjectMapper mapper;
@@ -18,33 +20,22 @@ public class DefinitionGenerator {
 	}
 
 	/**
-	 * @param moduleName
-	 *            May be null
-	 * @param clazz
+	 * @param module
+	 *            Module to be filled with named types (classes, enums, ...)
+	 * @param classes
 	 *            Class for which generating definition
-	 * @throws IOException
+	 * @throws JsonMappingException
 	 */
-	public void generateDefinition(String moduleName, Writer writer, Class<?> clazz) throws IOException {
+	public Module generateTypeScript(String moduleName, Collection<? extends Class<?>> classes)
+			throws JsonMappingException {
 
-		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(null);
+		Module module = new Module(moduleName);
+		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(module);
 
-		mapper.acceptJsonFormatVisitor(clazz, visitor);
-
-		if (moduleName != null) {
-			writer.write(format("module %s {\n\n", moduleName));
+		for (Class<?> clazz : classes) {
+			mapper.acceptJsonFormatVisitor(clazz, visitor);
 		}
-
-		for (Object typeObj : visitor.getNamedTypes().values()) {
-			if (moduleName != null) {
-				writer.write("export ");
-			}
-			((ANamedType) typeObj).writeDef(writer);
-			writer.write("\n\n");
-		}
-
-		if (moduleName != null) {
-			writer.write("}\n");
-		}
+		return module;
 	}
 
 }

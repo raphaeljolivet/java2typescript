@@ -5,17 +5,16 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitable;
-import com.fasterxml.jackson.module.typescript.grammar.AType;
 import com.fasterxml.jackson.module.typescript.grammar.AnyType;
 import com.fasterxml.jackson.module.typescript.grammar.ArrayType;
 import com.fasterxml.jackson.module.typescript.grammar.BooleanType;
 import com.fasterxml.jackson.module.typescript.grammar.NumberType;
 import com.fasterxml.jackson.module.typescript.grammar.StringType;
+import com.fasterxml.jackson.module.typescript.grammar.base.AbstractType;
 
+public class TSJsonArrayFormatVisitor extends ABaseTSJsonFormatVisitor<ArrayType> implements JsonArrayFormatVisitor {
 
-public class TSJsonArrayFormatVisitor extends BaseTSJsonFormatVisitor<ArrayType> implements JsonArrayFormatVisitor {
-
-	public TSJsonArrayFormatVisitor(BaseTSJsonFormatVisitor parentHolder) {
+	public TSJsonArrayFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
 		type = new ArrayType();
 	}
@@ -32,19 +31,19 @@ public class TSJsonArrayFormatVisitor extends BaseTSJsonFormatVisitor<ArrayType>
 		type.setItemType(typeScriptTypeFromJsonType(format));
 	}
 
-	private static AType typeScriptTypeFromJsonType(JsonFormatTypes type) {
+	private static AbstractType typeScriptTypeFromJsonType(JsonFormatTypes type) {
 		switch (type) {
 		case ANY:
-			return new AnyType();
+			return AnyType.getIntance();
 		case BOOLEAN:
-			return new BooleanType();
+			return BooleanType.getIntance();
 		case ARRAY:
-			return new ArrayType(new AnyType());
+			return new ArrayType(AnyType.getIntance());
 		case INTEGER: //$FALL-THROUGH$
 		case NUMBER:
-			return new NumberType();
+			return NumberType.getIntance();
 		case STRING:
-			return new StringType();
+			return StringType.getIntance();
 		default:
 			throw new UnsupportedOperationException();
 		}

@@ -3,13 +3,15 @@ package com.fasterxml.jackson.module.typescript.grammar;
 import java.io.IOException;
 import java.io.Writer;
 
-public class ArrayType extends AType {
-	private AType itemType;
+import com.fasterxml.jackson.module.typescript.grammar.base.AbstractType;
+
+public class ArrayType extends AbstractType {
+	private AbstractType itemType;
 
 	public ArrayType() {
 	}
 
-	public ArrayType(AType aType) {
+	public ArrayType(AbstractType aType) {
 		itemType = aType;
 	}
 
@@ -19,7 +21,7 @@ public class ArrayType extends AType {
 		writer.write("[]");
 	}
 
-	public void setItemType(AType itemType) {
+	public void setItemType(AbstractType itemType) {
 		this.itemType = itemType;
 	}
 

@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonMapFormatVisitor;
 import com.fasterxml.jackson.module.typescript.grammar.MapType;
 
 
-public class TSJsonMapFormatVisitor extends BaseTSJsonFormatVisitor<MapType> implements JsonMapFormatVisitor {
+public class TSJsonMapFormatVisitor extends ABaseTSJsonFormatVisitor<MapType> implements JsonMapFormatVisitor {
 
-	public TSJsonMapFormatVisitor(BaseTSJsonFormatVisitor parentHolder) {
+	public TSJsonMapFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
 		type = new MapType();
 	}
