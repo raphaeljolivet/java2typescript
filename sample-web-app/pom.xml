@@ -74,6 +74,12 @@
 			<artifactId>jetty-server</artifactId>
 			<version>${org.eclipse.jetty.version}</version>		   		   
 		</dependency>
+    
+        <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+      <version>${org.eclipse.jetty.version}</version>            
+    </dependency>
 					
 		<dependency>
 		    <groupId>org.eclipse.jetty</groupId>
@@ -104,31 +110,8 @@
 					</archive>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.dstovall</groupId>
-				<artifactId>onejar-maven-plugin</artifactId>
-				<version>1.4.4</version>
-				<executions>
-					<execution>
-						<configuration>
-							<onejarVersion>0.97</onejarVersion>
-							<classifier>onejar</classifier>
-						</configuration>
-						<goals>
-							<goal>one-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>onejar-maven-plugin.googlecode.com</id>
-			<url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-		</pluginRepository>
-	</pluginRepositories>
 	
 	<repositories>
 	    <repository>
