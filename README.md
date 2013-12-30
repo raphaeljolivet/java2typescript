@@ -1,9 +1,9 @@
-# Java to Typescript
 
-The aim of this project is to provide a bridge between a **Java** REST service definition and 
-a **Typescript** client. 
+## Purpose
 
-It enables to expose the full DTO model structure and REST service API as a clean typescript definition file, thus enabling strong type checking on the model of your application.
+**Java2Typescript** provides a bridge between a **Java** REST service definition and a **Typescript** client. 
+
+It enables to expose the full DTO model and REST services API as a clean typescript definition file, thus enabling strong type checking on the model of your application.
 
 This project is composed of 3 modules :
 * **java2typescript-jackson**: A [Jackson](http://jackson.codehaus.org/) module that generate **typescript** definition files for Java classes, using a Jackson ObjectMapper.
@@ -11,6 +11,11 @@ This project is composed of 3 modules :
  * A Typescript definition file of the service (`.d.ts`)
  * A `.json` file with additional info : HTTP method (POST, GET), parameter's locations (path, form params, body, ..)
 * **java2typescript-maven-plugin**: A maven plugin to automate the generation of `.d.ts` and `.json` files for a REST service
+
+## Big picture
+
+Here is a schema of the workflow for a typical project using **j2ts** :
+
 
 # Jackson Module
 
@@ -75,13 +80,12 @@ export interface TestClass {
 
 ## Interface / Class name
 
-
 By default, the name of the generated interfaces is the Java simple class name.
 You can use the annotation **@JsonTypeName("CustomClassName")** to override it.
 
 ## Module name
 
-The module name is optionnal. If null, the definition will be generated out of any module.
+The module name is optional. If null, the definition will be generated out of any module.
 
 # Licence
 
