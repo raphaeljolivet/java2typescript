@@ -1,4 +1,3 @@
-
 ## Purpose
 
 **Java2Typescript** provides a bridge between a **Java** REST service definition and a **Typescript** client. 
@@ -7,7 +6,7 @@ It enables to expose the full DTO model and REST services API as a clean typescr
 
 This project is composed of 3 modules :
 * **java2typescript-jackson**: A [Jackson](http://jackson.codehaus.org/) module that generate **typescript** definition files for Java classes, using a Jackson ObjectMapper.
-* **java2typescript-jaxrs**: A [JAX-RS](https://jax-rs-spec.java.net/) module that takes a JAX-RS-annotated java class and produces both :
+* **java2typescript-jaxrs**: An extension to **java2typescript-jackson** that takes a [JAX-RS](https://jax-rs-spec.java.net/) annotated java class and produces both :
  * A Typescript definition file of the service (`.d.ts`)
  * A `.json` file with additional info : HTTP method (POST, GET), parameter's locations (path, form params, body, ..)
 * **java2typescript-maven-plugin**: A maven plugin to automate the generation of `.d.ts` and `.json` files for a REST service
