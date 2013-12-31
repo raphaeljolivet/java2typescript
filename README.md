@@ -5,11 +5,11 @@
 It enables to expose the full DTO model and REST services API as a clean typescript definition file, thus enabling strong type checking on the model of your application.
 
 This project is composed of 3 modules :
-* **java2typescript-jackson**: A [Jackson](http://jackson.codehaus.org/) module that generate **typescript** definition files for Java classes, using a Jackson ObjectMapper.
-* **java2typescript-jaxrs**: An extension to **java2typescript-jackson** that takes a [JAX-RS](https://jax-rs-spec.java.net/) annotated java class and produces both :
+* **[java2typescript-jackson](java2typescript-jackson)**: A [Jackson](http://jackson.codehaus.org/) module that generate **typescript** definition files for Java classes, using a Jackson ObjectMapper.
+* **[java2typescript-jaxrs](java2typescript-jaxrs)**: An extension to **java2typescript-jackson** that takes a [JAX-RS](https://jax-rs-spec.java.net/) annotated java class and produces both :
  * A Typescript definition file of the service (`.d.ts`), together with description of all needed DTO objects.
  * A `.json` file with additional info : HTTP method (POST, GET), parameter's locations (path, form params, body, ..)
-* **java2typescript-maven-plugin**: A maven plugin to automate the generation of `.d.ts` and `.json` files for a REST service
+* **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of `.d.ts` and `.js` implementation of REST services
 
 ## Big picture
 
@@ -23,10 +23,9 @@ There are only two source files here :
 The detailed workflow is:
 
 1. `AppRest.java` contains the annotated **JAX-RS** service definition
-2. **j2ts** compiles the REST service definition into a `.d.ts` description file, `.json` file (for runtime)
+2. **j2ts** compiles the REST service definition into a `.d.ts` description file, and a `.js` file (runtime implementation)
 3. `App.ts` imports and uses the `.d.ts` file.
 4. `App.ts` is compiled into a `App.js` file
-5. At runtime the statically provided `app2ts.js` adapter transforms the JSON decription of the service into a working javascript client.
 
 # Jackson Module
 
