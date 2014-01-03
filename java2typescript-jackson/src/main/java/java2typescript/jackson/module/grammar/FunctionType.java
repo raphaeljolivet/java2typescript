@@ -21,15 +21,24 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
-
 public class FunctionType extends AbstractType {
 
 	private LinkedHashMap<String, AbstractType> parameters = new LinkedHashMap<String, AbstractType>();
 
 	private AbstractType resultType;
 
+	/** By default, printed as lambda function type (with =>) */
 	@Override
 	public void write(Writer writer) throws IOException {
+		write(writer, true);
+	}
+
+	/** Write as non lambda : func(a:string) : string */
+	public void writeNonLambda(Writer writer) throws IOException {
+		write(writer, false);
+	}
+
+	private void write(Writer writer, boolean lambdaSyntax) throws IOException {
 		writer.write("(");
 		int i = 1;
 		for (Entry<String, AbstractType> entry : parameters.entrySet()) {
@@ -37,11 +46,11 @@ public class FunctionType extends AbstractType {
 			writer.write(": ");
 			entry.getValue().write(writer);
 			if (i < parameters.size()) {
-				writer.write(",");
+				writer.write(", ");
 			}
 			i++;
 		}
-		writer.write("):");
+		writer.write(")" + (lambdaSyntax ? "=> " : ": "));
 		resultType.write(writer);
 	}
 

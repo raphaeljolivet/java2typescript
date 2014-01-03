@@ -21,7 +21,7 @@ public class StringType extends AbstractPrimitiveType {
 
 	static private StringType instance = new StringType();
 
-	static public StringType getIntance() {
+	static public StringType getInstance() {
 		return instance;
 	}
 

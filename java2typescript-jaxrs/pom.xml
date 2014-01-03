@@ -15,7 +15,7 @@
 	</parent>
 
 	<artifactId>java2typescript-jaxrs</artifactId>
-	<name>jax-rs-json-descriptor</name>
+	<name>java2typescript jaxrs</name>
 	<description>A module to generate JSON descriptor and Typescript definition out of a REST Service, out of JAX-RS annotations</description>
 	<dependencies>
 		<dependency>
@@ -28,11 +28,16 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.2.2</version>
 		</dependency>
-    <dependency>
-        <groupId>com.esotericsoftware.kryo</groupId>
-        <artifactId>kryo</artifactId>
-        <version>2.22</version>
-    </dependency>
+		<dependency>
+			<groupId>com.esotericsoftware.kryo</groupId>
+			<artifactId>kryo</artifactId>
+			<version>2.22</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>15.0</version>
+		</dependency>
 		<dependency>
 			<groupId>java2typescript</groupId>
 			<artifactId>java2typescript-jackson</artifactId>

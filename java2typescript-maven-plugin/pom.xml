@@ -11,7 +11,7 @@
   <artifactId>java2typescript-maven-plugin</artifactId>
 
   <packaging>maven-plugin</packaging>
-  <name>java2typescript-maven-plugin Maven Mojo</name>
+  <name>java2typescript maven plugin</name>
   <url>http://maven.apache.org</url>
 
   <build>

@@ -19,8 +19,11 @@ import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import com.esotericsoftware.kryo.Kryo;
@@ -58,13 +61,21 @@ public class RestService {
 	/**
 	 * Dump a JSON representation of the REST services
 	 */
-	public void toJSON(Writer writer) throws JsonGenerationException, JsonMappingException, IOException {
+	static public void toJSON(Collection<RestService> services, Writer writer) throws JsonGenerationException,
+			JsonMappingException, IOException {
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(INDENT_OUTPUT, true);
 
-		mapper.writeValue(writer, copyWithoutContextParams(this));
+		List<RestService> restServivcesWithoutParams = new ArrayList<RestService>();
+		for (RestService restService : services) {
+			restServivcesWithoutParams.add(copyWithoutContextParams(restService));
+		}
+
+		mapper.writeValue(writer, restServivcesWithoutParams);
 	}
 
+	/** Re,ove @Context parameters from JSON definition before rendering */
 	static private RestService copyWithoutContextParams(RestService restService) {
 		Kryo kryo = new Kryo();
 		RestService res = kryo.copy(restService);

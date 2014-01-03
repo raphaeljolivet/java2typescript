@@ -26,7 +26,7 @@ import java.beans.Transient;
 import java.lang.reflect.Method;
 import java2typescript.jackson.module.grammar.AnyType;
 import java2typescript.jackson.module.grammar.FunctionType;
-import java2typescript.jackson.module.grammar.ObjectType;
+import java2typescript.jackson.module.grammar.ClassType;
 import java2typescript.jackson.module.grammar.VoidType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
@@ -44,13 +44,13 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
-public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ObjectType> implements JsonObjectFormatVisitor {
+public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassType> implements JsonObjectFormatVisitor {
 
 	private Class clazz;
 
 	public TSJsonObjectFormatVisitor(ABaseTSJsonFormatVisitor<?> parentHolder, String className, Class clazz) {
 		super(parentHolder);
-		type = new ObjectType(className);
+		type = new ClassType(className);
 		this.clazz = clazz;
 		addPublicMethods();
 	}

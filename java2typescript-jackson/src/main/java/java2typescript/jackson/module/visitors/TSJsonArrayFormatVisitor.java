@@ -59,7 +59,7 @@ public class TSJsonArrayFormatVisitor extends ABaseTSJsonFormatVisitor<ArrayType
 		case NUMBER:
 			return NumberType.getIntance();
 		case STRING:
-			return StringType.getIntance();
+			return StringType.getInstance();
 		default:
 			throw new UnsupportedOperationException();
 		}

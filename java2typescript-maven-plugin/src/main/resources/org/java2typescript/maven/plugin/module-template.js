@@ -38,7 +38,7 @@ j2ts = {
 
 } // end of j2ts module definition 
 
-j2ts.buildModule = function(desc) {
+j2ts.buildModule = function(serviceDescriptors) {
 
   var outModule = {
     
@@ -91,11 +91,22 @@ j2ts.buildModule = function(desc) {
     }
   }
   
-  // Dynamically add some methods to the module
-  for (var methodName in desc.methods) {  
-    var methodDesc = desc.methods[methodName]; 
-    outModule[methodName] = methodGenerator(methodDesc);  
+  // Loop on services
+  for (var i = 0; i < serviceDescriptors.length; i++) {
+	  
+	  // Add service to module
+	  serviceDescriptor = serviceDescriptors[i];
+	  outService = {}
+	  outModule[serviceDescriptor.name] = outService;
+	  
+	  // Add methods to service
+	  for (var methodName in serviceDescriptor.methods) {  
+	    var methodDesc = desc.methods[methodName]; 
+	    outService[methodName] = methodGenerator(methodDesc);  
+	  }
   }
+  
+ 
   
   return outModule;
 }

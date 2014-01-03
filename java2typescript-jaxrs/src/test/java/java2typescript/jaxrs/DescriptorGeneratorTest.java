@@ -18,8 +18,8 @@ package java2typescript.jaxrs;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Collections;
 import java2typescript.jackson.module.grammar.Module;
-import java2typescript.jaxrs.model.RestService;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -72,16 +72,17 @@ public class DescriptorGeneratorTest {
 	}
 
 	@Test
-	public void testJSONGenerate() throws JsonGenerationException, JsonMappingException, IOException {
-		ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(PeopleRestService.class);
-		RestService restService = descGen.generateRestService();
-		restService.toJSON(out);
+	public void testJSGenerate() throws JsonGenerationException, JsonMappingException, IOException {
+		ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(
+				Collections.singletonList(PeopleRestService.class));
+		descGen.generateJavascript("moduleName", out);
 	}
 
 	@Test
 	public void testTypescriptGenerate() throws JsonGenerationException, JsonMappingException, IOException {
 
-		ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(PeopleRestService.class);
+		ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(
+				Collections.singletonList(PeopleRestService.class));
 
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule("custom-mapping");

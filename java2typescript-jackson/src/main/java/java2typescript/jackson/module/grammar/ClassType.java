@@ -25,14 +25,20 @@ import java.util.Map.Entry;
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
-
-public class ObjectType extends AbstractNamedType {
+public class ClassType extends AbstractNamedType {
 
 	private Map<String, AbstractType> fields = new LinkedHashMap<String, AbstractType>();
 
 	private Map<String, FunctionType> methods = new LinkedHashMap<String, FunctionType>();
 
-	public ObjectType(String className) {
+	static private ClassType objectType = new ClassType("Object");
+
+	/** Root Object class */
+	static public ClassType getObjectClass() {
+		return objectType;
+	}
+
+	public ClassType(String className) {
 		super(className);
 	}
 
@@ -46,7 +52,7 @@ public class ObjectType extends AbstractNamedType {
 		}
 		for (String methodName : methods.keySet()) {
 			writer.write("    " + methodName);
-			this.methods.get(methodName).write(writer);
+			this.methods.get(methodName).writeNonLambda(writer);
 			writer.write(";\n");
 		}
 		writer.write("}");

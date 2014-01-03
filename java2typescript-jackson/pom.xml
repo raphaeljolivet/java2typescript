@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>java2typescript-jackson</artifactId>
-	<name>java2typescript-jackson</name>
+	<name>java2typescript jackson module</name>
 	<description>
      Extension Module for Jackson to provide generation of TypeScript definition file from Java class definition 
   </description>

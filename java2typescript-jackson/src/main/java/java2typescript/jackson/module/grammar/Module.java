@@ -21,14 +21,17 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
-
+import java2typescript.jackson.module.grammar.base.AbstractType;
 
 public class Module {
 
 	private String name;
 
 	private Map<String, AbstractNamedType> namedTypes = new HashMap<String, AbstractNamedType>();
+
+	private Map<String, AbstractType> vars = new HashMap<String, AbstractType>();
 
 	public Module() {
 	}
@@ -41,6 +44,10 @@ public class Module {
 		return namedTypes;
 	}
 
+	public Map<String, AbstractType> getVars() {
+		return vars;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -50,21 +57,22 @@ public class Module {
 	}
 
 	public void write(Writer writer) throws IOException {
-		if (name != null) {
-			writer.write(format("module %s {\n\n", name));
-		}
 
-		for (Object typeObj : namedTypes.values()) {
-			if (name != null) {
-				writer.write("export ");
-			}
-			((AbstractNamedType) typeObj).writeDef(writer);
+		writer.write(format("export module %s {\n\n", name));
+
+		for (AbstractNamedType type : namedTypes.values()) {
+			writer.write("export ");
+			type.writeDef(writer);
 			writer.write("\n\n");
 		}
 
-		if (name != null) {
-			writer.write("}\n");
+		for (Entry<String, AbstractType> entry : vars.entrySet()) {
+			writer.write("export var " + entry.getKey() + ": ");
+			entry.getValue().write(writer);
+			writer.write(";\n");
 		}
+
+		writer.write("}\n");
 		writer.flush();
 	}
 

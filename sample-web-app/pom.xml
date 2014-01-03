@@ -98,7 +98,16 @@
                     <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
-            </plugin>		
+            </plugin>	
+            <plugin>
+                <groupId>java2typescript</groupId>
+                <artifactId>java2typescript-maven-plugin</artifactId>
+                <version>0.1-SNAPSHOT</version>
+                <configuration>
+                    <serviceClass>com.example.rs.PeopleRestService</serviceClass>
+                    <moduleName>People</moduleName>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

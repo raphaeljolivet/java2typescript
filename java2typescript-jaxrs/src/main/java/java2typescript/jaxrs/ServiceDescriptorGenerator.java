@@ -20,17 +20,25 @@ import static java2typescript.jaxrs.model.ParamType.FORM;
 import static java2typescript.jaxrs.model.ParamType.PATH;
 import static java2typescript.jaxrs.model.ParamType.QUERY;
 
+import java.beans.Introspector;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import java2typescript.jackson.module.DefinitionGenerator;
+import java2typescript.jackson.module.grammar.AnyType;
+import java2typescript.jackson.module.grammar.ClassType;
 import java2typescript.jackson.module.grammar.FunctionType;
 import java2typescript.jackson.module.grammar.Module;
-import java2typescript.jackson.module.grammar.ObjectType;
+import java2typescript.jackson.module.grammar.StringType;
+import java2typescript.jackson.module.grammar.VoidType;
+import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 import java2typescript.jaxrs.model.HttpMethod;
 import java2typescript.jaxrs.model.Param;
@@ -50,6 +58,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -64,16 +73,24 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  */
 public class ServiceDescriptorGenerator {
 
-	private final Class<?> clazz;
+	private static final String JS_TEMPLATE_RES = "module-template.js";
+
+	private static final String MODULE_NAME_PLACEHOLDER = "%MODULE_NAME%";
+	private static final String JSON_PLACEHOLDER = "%JSON%";
+
+	static private final String ROOT_URL_VAR = "rootUrl";
+	static private final String ADAPTER_VAR = "adapter";
+
+	private final Collection<? extends Class<?>> classes;
 
 	private ObjectMapper mapper;
 
-	public ServiceDescriptorGenerator(Class<?> clazz) {
-		this(clazz, new ObjectMapper());
+	public ServiceDescriptorGenerator(Collection<? extends Class<?>> classes) {
+		this(classes, new ObjectMapper());
 	}
 
-	public ServiceDescriptorGenerator(Class<?> clazz, ObjectMapper mapper) {
-		this.clazz = clazz;
+	public ServiceDescriptorGenerator(Collection<? extends Class<?>> classes, ObjectMapper mapper) {
+		this.classes = classes;
 		this.mapper = mapper;
 		addDummyMappingForJAXRSClasses();
 	}
@@ -99,27 +116,33 @@ public class ServiceDescriptorGenerator {
 	 * Main method to generate a REST Service desciptor out of JAX-RS service
 	 * class
 	 */
-	public RestService generateRestService() {
+	private Collection<RestService> generateRestServices(Collection<? extends Class<?>> classes) {
 
-		RestService module = new RestService();
-		module.setName(clazz.getSimpleName());
+		List<RestService> services = new ArrayList<RestService>();
 
-		Path pathAnnotation = clazz.getAnnotation(Path.class);
+		for (Class<?> clazz : classes) {
 
-		if (pathAnnotation == null) {
-			throw new RuntimeException("No @Path on class " + clazz.getName());
-		}
+			RestService service = new RestService();
+			service.setName(clazz.getSimpleName());
 
-		module.setPath(pathAnnotation.value());
+			Path pathAnnotation = clazz.getAnnotation(Path.class);
 
-		for (Method method : clazz.getDeclaredMethods()) {
-			if (Modifier.isPublic(method.getModifiers())) {
-				RestMethod restMethod = generateMethod(method);
-				module.getMethods().put(restMethod.getName(), restMethod);
+			if (pathAnnotation == null) {
+				throw new RuntimeException("No @Path on class " + clazz.getName());
 			}
-		}
 
-		return module;
+			service.setPath(pathAnnotation.value());
+
+			for (Method method : clazz.getDeclaredMethods()) {
+				if (Modifier.isPublic(method.getModifiers())) {
+					RestMethod restMethod = generateMethod(method);
+					service.getMethods().put(restMethod.getName(), restMethod);
+				}
+			}
+
+			services.add(service);
+		}
+		return services;
 	}
 
 	/**
@@ -128,18 +151,41 @@ public class ServiceDescriptorGenerator {
 	 */
 	public Module generateTypeScript(String moduleName) throws JsonMappingException {
 
-		// Generates Typescript module out of service class definition
+		// Generates Typescript module out of service classses definition
 		DefinitionGenerator defGen = new DefinitionGenerator(mapper);
-		Module module = defGen.generateTypeScript(moduleName, Collections.singleton(clazz));
+		Module module = defGen.generateTypeScript(moduleName, classes);
 
-		// Generate REST service descriptor
-		RestService restModule = generateRestService();
+		// For each rest service, update methods with parameter names, got from Rest service descriptor 
+		for (RestService restService : generateRestServices(classes)) {
+			ClassType classDef = (ClassType) module.getNamedTypes().get(restService.getName());
+			decorateParamNames(restService, classDef);
+		}
 
-		// Update methods with parameter names
-		ObjectType classDef = (ObjectType) module.getNamedTypes().get(clazz.getSimpleName());
-		decorateParamNames(restModule, classDef);
+		addModuleVars(module, classes);
 
 		return module;
+	}
+
+	/** Generate JS implementation 
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException */
+	public void generateJavascript(String moduleName, Writer writer) throws JsonGenerationException,
+			JsonMappingException, IOException {
+
+		// Generate JSON as String
+		StringWriter jsonOut = new StringWriter();
+		Collection<RestService> restServices = this.generateRestServices(classes);
+		RestService.toJSON(restServices, jsonOut);
+
+		// Read template content
+		String jsTemplate = com.google.common.io.Resources.toString(//
+				ServiceDescriptorGenerator.class.getResource(JS_TEMPLATE_RES), //
+				Charset.defaultCharset());
+
+		// Replace template values
+		String out = jsTemplate.replace(MODULE_NAME_PLACEHOLDER, moduleName);
+		out = out.replace(JSON_PLACEHOLDER, jsonOut.toString());
 	}
 
 	private RestMethod generateMethod(Method method) {
@@ -203,7 +249,7 @@ public class ServiceDescriptorGenerator {
 	}
 
 	/** Use collected annotation in order to ad param names to service methods */
-	private void decorateParamNames(RestService module, ObjectType classDef) {
+	private void decorateParamNames(RestService module, ClassType classDef) {
 
 		// Loop on methods of the service
 		for (RestMethod restMethod : module.getMethods().values()) {
@@ -227,4 +273,28 @@ public class ServiceDescriptorGenerator {
 		}
 	}
 
+	private void addModuleVars(Module module, Collection<? extends Class<?>> serviceClasses) {
+		module.getVars().put(ROOT_URL_VAR, StringType.getInstance());
+
+		// Adapter function 
+		FunctionType adapterFuncType = new FunctionType();
+		adapterFuncType.setResultType(VoidType.getInstance());
+		adapterFuncType.getParameters().put("httpMethod", StringType.getInstance());
+		adapterFuncType.getParameters().put("path", StringType.getInstance());
+		adapterFuncType.getParameters().put("getParams", ClassType.getObjectClass());
+		adapterFuncType.getParameters().put("postParams", ClassType.getObjectClass());
+		adapterFuncType.getParameters().put("body", AnyType.getIntance());
+
+		module.getVars().put(ROOT_URL_VAR, StringType.getInstance());
+		module.getVars().put(ADAPTER_VAR, adapterFuncType);
+
+		// Generate : var someService : SomeService;
+		for (Class<?> clazz : serviceClasses) {
+			String className = clazz.getSimpleName();
+			AbstractNamedType type = module.getNamedTypes().get(className);
+			String varName = Introspector.decapitalize(className);
+			module.getVars().put(varName, type);
+		}
+
+	}
 }

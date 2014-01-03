@@ -20,17 +20,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java2typescript.jackson.module.grammar.Module;
 import java2typescript.jaxrs.ServiceDescriptorGenerator;
-import java2typescript.jaxrs.model.RestService;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-
-import com.google.common.io.Resources;
 
 /**
  * Generate typescript file out of RESt service definition
@@ -42,103 +37,83 @@ import com.google.common.io.Resources;
  */
 public class MainMojo extends AbstractMojo {
 
-  private static final String JS_TEMPLATE_RES = "module-template.js";
+	/**
+	 * Full class name of the REST service
+	 * @required 
+	 * @parameter
+	 *    alias="serviceClass" 
+	 *    expression="${j2ts.serviceClass}"
+	 */
+	private String restServiceClassName;
 
-  private static final String MODULE_NAME_PLACEHOLDER = "%MODULE_NAME%";
-  private static final String JSON_PLACEHOLDER = "%JSON%";
+	/**
+	 * Name of output module (ts,js)
+	 * @required 
+	 * @parameter
+	 *     alias="moduleName" 
+	 *     expression="${j2ts.moduleName}"
+	 */
+	private String moduleName;
 
-  /**
-   * Full class name of the REST service
-   * @required 
-   * @parameter
-   *    alias="j2ts.service.class" 
-   *    expression="${j2ts.service.class}"
-   */
-  private String restServiceClassName;
+	/**
+	 * Path to output typescript folder
+	 * The name will be <moduleName>.d.ts
+	 * @required
+	 * @parameter 
+	 *    alias="tsOutFolder" 
+	 * 		expression="${j2ts.tsOutFolder}" 
+	 * 		default-value = "${project.build.directory}"
+	 */
+	private File tsOutFolder;
 
-  /**
-   * Name of output module (ts,js)
-   * @required 
-   * @parameter
-   *     alias="j2ts.module.name" 
-   *     expression="${j2ts.module.name}"
-   */
-  private String moduleName;
+	/**
+	 * Path to output Js file
+	 * The name will be <moduleName>.js
+	 * 
+	 * @required
+	 * @parameter 
+	 *    alias="jsOutFolder"
+	 * 		expression="${j2ts.jsOutFolder}" 
+	 * 		default-value = "${project.build.directory}"
+	 */
+	private File jsOutFolder;
 
-  /**
-   * Path to output typescript folder
-   * The name will be <moduleName>.d.ts
-   * @required
-   * @parameter 
-   *    alias="j2ts.out.ts"
-   * 		expression="${j2ts.out.ts}" 
-   * 		default-value = "${project.build.directory}"
-   */
-  private File tsOutFolder;
+	@Override
+	public void execute() throws MojoExecutionException {
 
-  /**
-   * Path to output Js file
-   * The name will be <moduleName>.js
-   * 
-   * @required
-   * @parameter 
-   *    alias="j2ts.out.js"
-   * 		expression="${j2ts.out.js}" 
-   * 		default-value = "${project.build.directory}"
-   */
-  private File jsOutFolder;
+		try {
 
-  @Override
-  public void execute() throws MojoExecutionException {
+			// Descriptor for service
+			Class<?> serviceClass = Class.forName(restServiceClassName);
+			ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(serviceClass);
 
-    try {
+			// To Typescript
+			{
+				Writer writer = createFileAndGetWriter(tsOutFolder, moduleName + ".d.ts");
+				Module tsModule = descGen.generateTypeScript(moduleName);
+				tsModule.write(writer);
+				writer.close();
+			}
 
-      // Descriptor for service
-      Class<?> serviceClass = Class.forName(restServiceClassName);
-      ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(serviceClass);
+			// To JS
+			{
+				Writer outFileWriter = createFileAndGetWriter(jsOutFolder, moduleName + ".js");
 
-      // To Typescript
-      {
-        Writer writer = createFileAndGetWriter(tsOutFolder, moduleName + ".d.ts");
-        Module tsModule = descGen.generateTypeScript(moduleName);
-        tsModule.write(writer);
-        writer.close();
-      }
+				outFileWriter.write(out);
+				outFileWriter.close();
+			}
 
-      // To JS
-      {
-        Writer outFileWriter = createFileAndGetWriter(jsOutFolder, moduleName + ".js");
+		} catch (Exception e) {
+			throw new MojoExecutionException(e.getMessage(), e);
+		}
+	}
 
-        // Generate JSON as String
-        StringWriter json = new StringWriter();
-        RestService restService = descGen.generateRestService();
-        restService.toJSON(json);
-
-        // Read template content
-        String jsTemplate = Resources.toString(//
-            MainMojo.class.getResource(JS_TEMPLATE_RES), //
-            Charset.defaultCharset());
-
-        // Replace template values
-        String out = jsTemplate.replace(MODULE_NAME_PLACEHOLDER, moduleName);
-        out = out.replace(JSON_PLACEHOLDER, json.toString());
-
-        outFileWriter.write(out);
-        outFileWriter.close();
-      }
-
-    }
-    catch (Exception e) {
-      throw new MojoExecutionException(e.getMessage(), e);
-    }
-  }
-
-  private Writer createFileAndGetWriter(File folder, String fileName) throws IOException {
-    File file = new File(folder, fileName);
-    getLog().info("Create file : " + file.getCanonicalPath());
-    file.createNewFile();
-    FileOutputStream stream = new FileOutputStream(file);
-    OutputStreamWriter writer = new OutputStreamWriter(stream);
-    return writer;
-  };
+	private Writer createFileAndGetWriter(File folder, String fileName) throws IOException {
+		File file = new File(folder, fileName);
+		getLog().info("Create file : " + file.getCanonicalPath());
+		file.createNewFile();
+		FileOutputStream stream = new FileOutputStream(file);
+		OutputStreamWriter writer = new OutputStreamWriter(stream);
+		return writer;
+	};
 }

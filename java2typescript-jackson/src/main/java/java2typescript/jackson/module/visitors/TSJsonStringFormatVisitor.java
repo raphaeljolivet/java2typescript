@@ -25,7 +25,7 @@ public class TSJsonStringFormatVisitor extends ABaseTSJsonFormatVisitor<StringTy
 
 	public TSJsonStringFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = StringType.getIntance();
+		type = StringType.getInstance();
 	}
 
 	@Override
