@@ -7,9 +7,10 @@ It enables to expose the full DTO model and REST services API as a clean typescr
 This project is composed of 3 modules :
 * **[java2typescript-jackson](java2typescript-jackson)**: A [Jackson](http://jackson.codehaus.org/) module that generate **typescript** definition files for Java classes, using a Jackson ObjectMapper.
 * **[java2typescript-jaxrs](java2typescript-jaxrs)**: An extension to **java2typescript-jackson** that takes a [JAX-RS](https://jax-rs-spec.java.net/) annotated java class and produces both :
- * A Typescript definition file of the service (`.d.ts`), together with description of all needed DTO objects.
- * A `.json` file with additional info : HTTP method (POST, GET), parameter's locations (path, form params, body, ..)
-* **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of `.d.ts` and `.js` implementation of REST services
+ * A Typescript definition file of the service (`.d.ts`), together with description of all needed DTO objects. 
+ * An implementation `.js `of the above definition as REST client stub. 
+ * 
+* **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of `.d.ts` and `.js` implementation of REST services.
 
 ## Big picture
 
@@ -27,78 +28,13 @@ The detailed workflow is:
 3. `App.ts` imports and uses the `.d.ts` file.
 4. `App.ts` is compiled into a `App.js` file
 
-# Jackson Module
+# Example
 
-This is a [Jackson](http://jackson.codehaus.org/) module.
-It generates *TypeScript* definition files (.d.ts) for Java classes.
-
+**java2typescript** handles all the HTTP REST standard itself, and present services like vanilla Typescript methods, regardless of the HTTP method / mime to use.
 
 
+# Usage
 
-## Status
-
-The Generator currently support the following *TypeScript* syntax :
-
-* Primitives : bool, string, number
-* Interfaces (from classes)
-* Typed arrays
-* Typed Maps
-* Enums
-* Methods
-
-## Usage
-
-Use the class **DefinitionGenerator** like so :
-```java
-	
-ObjectMapper mapper = new ObjectMapper();
-DefinitionGenerator generator = new DefinitionGenerator(mapper);
-
-Module module = generator.generateTypeScript(//
-    "moduleName", //
-    newArrayList(//
-           MyClass.class, //
-           OtherClass.class));
-           
-module.write(outWriter);
-```
-
-## Sample output
-
-```typescript
-
-module MyModule {
-
-export enum MyEnum {
-    VAL1,
-    VAL2,
-    VAL3,
-}
-
-export interface TestClass {
-    aString: string;
-    aBoolean: bool;
-    aInt: number;
-    aFloat: number;
-    stringArray: string[];
-    map: { [key: string ]: bool;};
-    recursive: TestClass;
-    recursiveArray: TestClass[];
-    aEnum: ChangedEnumName;
-}
-
-}
-```
-
-
-## Interface / Class name
-
-By default, the name of the generated interfaces is the Java simple class name.
-You can use the annotation **@JsonTypeName("CustomClassName")** to override it.
-
-## Module name
-
-The module name is optional. If null, the definition will be generated out of any module.
 
 # Licence
 
