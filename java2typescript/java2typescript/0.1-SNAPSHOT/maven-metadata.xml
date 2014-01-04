@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>java2typescript</groupId>
+  <artifactId>java2typescript</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20140104.154906</timestamp>
+      <buildNumber>4</buildNumber>
+    </snapshot>
+    <lastUpdated>20140104154906</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.1-20140104.154906-4</value>
+        <updated>20140104154906</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
