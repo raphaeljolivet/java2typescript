@@ -1,0 +1,68 @@
+<!--
+  Copyright 2013 Raphael Jolivet
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+    http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>java2typescript-jackson</artifactId>
+	<name>java2typescript jackson module</name>
+	<description>
+     Extension Module for Jackson to provide generation of TypeScript definition file from Java class definition 
+  </description>
+	<developers>
+		<developer>
+			<id>raphael.jolivet</id>
+			<name>Raphael Jolivet</name>
+			<email>raphael.jolivet@gmail.com</email>
+		</developer>
+	</developers>
+	<properties>
+			<jackson.core.version>2.2.2</jackson.core.version>
+			<github.global.server>github</github.global.server>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.core.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>15.0</version>
+			<scope>test</scope>
+		</dependency>
+
+
+	</dependencies>
+
+	<parent>
+		<groupId>java2typescript</groupId>
+		<artifactId>java2typescript</artifactId>
+		<version>0.1</version>
+	</parent>
+</project>
