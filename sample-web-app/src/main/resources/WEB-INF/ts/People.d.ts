@@ -1,10 +1,11 @@
 declare module People {
 
 export interface PeopleRestService {
-    updatePerson(email: string,firstName: string,lastName: string):Person;
-    deletePerson(email: string):any;
-    addPerson(email: string,firstName: string,lastName: string):any;
-    getPeople(email: string):Person;
+    getPeopleList(page: number): Person[];
+    addPerson(email: string, firstName: string, lastName: string): any;
+    updatePerson(email: string, firstName: string, lastName: string): Person;
+    deletePerson(email: string): any;
+    getPeople(email: string): Person;
 }
 
 export interface Person {

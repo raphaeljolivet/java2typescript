@@ -27,6 +27,8 @@ import java2typescript.jaxrs.ServiceDescriptorGenerator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
+import com.google.common.collect.Lists;
+
 /**
  * Generate typescript file out of RESt service definition
  * 
@@ -85,7 +87,7 @@ public class MainMojo extends AbstractMojo {
 
 			// Descriptor for service
 			Class<?> serviceClass = Class.forName(restServiceClassName);
-			ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(serviceClass);
+			ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(Lists.newArrayList(serviceClass));
 
 			// To Typescript
 			{
@@ -98,8 +100,7 @@ public class MainMojo extends AbstractMojo {
 			// To JS
 			{
 				Writer outFileWriter = createFileAndGetWriter(jsOutFolder, moduleName + ".js");
-
-				outFileWriter.write(out);
+				descGen.generateJavascript(moduleName, outFileWriter);
 				outFileWriter.close();
 			}
 
