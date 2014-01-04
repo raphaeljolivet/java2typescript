@@ -28,12 +28,78 @@ The detailed workflow is:
 3. `App.ts` imports and uses the `.d.ts` file.
 4. `App.ts` is compiled into a `App.js` file
 
+# Usage
+
+Please refer to the documentation of the [maven plugin](java2typescript-maven-plugin) and the example below
+
 # Example
 
 **java2typescript** handles all the HTTP REST standard itself, and present services like vanilla Typescript methods, regardless of the HTTP method / mime to use.
 
+Consider the following JAX-RS service 
+```java
+@Path( "/people" ) 
+public interface PeopleRestService {
+	
+	
+	@Produces( { MediaType.APPLICATION_JSON } )
+	@GET
+	public Collection< Person > getPeoples( @QueryParam( "page") @DefaultValue( "1" ) final int page ) {
+		return peopleService.getPeople( page, 5 );
+	}
 
-# Usage
+	@Produces( { MediaType.APPLICATION_JSON } )
+	@Path( "/{email}" )
+	@GET
+	public Person getPeople( @PathParam( "email" ) final String email ) {
+		return peopleService.getByEmail( email );
+	}
+}
+```
+
+The **[maven plugin](java2typescript-maven-plugin)** will produce the following typescript definition file :
+
+
+```typescript
+export module People {
+
+export interface PeopleRestService {
+    getPeopleList(page: number): Person[];
+    getPeople(email: string): Person;
+}
+
+export interface Person {
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
+export var rootUrl: string;
+export var peopleRestService: PeopleRestService;
+export var adapter: (httpMethod: string, path: string, getParams: Object, postParams: Object, body: any)=> void;
+}
+```
+
+The module **People** contains definition of the DTO **Person** and the service **PeopleRestService**, it also provides 3 attributes :
+* **rootURL** : URL of the service : Should be set before usage
+* **peopleRESTService** : An instance of the service
+* **adapter** : An apadater for REST calls using JQuery by default
+
+Then, in your application, you can call the service like so 
+```typescript
+/// <reference path="People.d.ts" />
+import p = People;
+import Person = p.Person;
+import prs = p.peopleRestService;
+
+p.rootUrl = "http://someurl/root/";
+
+var personList : Person[] = prs.getPeopleList(1);
+var onePerson : Person = prs.getPeople("rrr@eee.com");
+
+```
+ 
+Don't forget to import the generated file **People.js** in the final HTML page.
 
 
 # Licence
