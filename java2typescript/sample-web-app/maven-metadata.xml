@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>java2typescript</groupId>
-  <artifactId>java2typescript-jackson</artifactId>
+  <artifactId>sample-web-app</artifactId>
   <versioning>
     <versions>
       <version>0.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20140104154923</lastUpdated>
+    <lastUpdated>20140104154933</lastUpdated>
   </versioning>
 </metadata>
