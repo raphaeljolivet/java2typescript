@@ -61,67 +61,6 @@
 
 	</dependencies>
 
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>GitHub ${project.artifactId} Repository</name>
-			<url>https://raw.github.com/raphaeljolivet/${project.artifactId}/mvn-repo</url>
-		</repository>
-	</distributionManagement>
-
-	<build>
-		<plugins>
-
-			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.7</version>
-				<configuration>
-					<message>Maven artifacts for ${project.version}</message>
-					<noJekyll>true</noJekyll>
-					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory>
-					<branch>refs/heads/mvn-repo</branch>
-					<includes>
-						<include>**/*</include>
-					</includes>
-					<repositoryName>${project.artifactId}</repositoryName>
-					<repositoryOwner>raphaeljolivet</repositoryOwner>
-				</configuration>
-				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
-						'deploy' phase -->
-					<execution>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>deploy</phase>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.eclipse.mylyn.github</groupId>
-						<artifactId>org.eclipse.egit.github.core</artifactId>
-						<version>2.0.3</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<scm>
-		<connection>scm:git:git@github.com:raphaeljolivet/jackson-module-typescript.git</connection>
-		<url>scm:git:git@github.com:raphaeljolivet/jackson-module-typescript.git</url>
-		<developerConnection>scm:git:git@github.com:raphaeljolivet/jackson-module-typescript.git</developerConnection>
-	</scm>
-
 	<parent>
 		<groupId>java2typescript</groupId>
 		<artifactId>java2typescript</artifactId>
