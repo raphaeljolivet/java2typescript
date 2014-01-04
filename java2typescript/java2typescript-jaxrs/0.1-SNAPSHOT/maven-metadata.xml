@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata modelVersion="1.1.0">
   <groupId>java2typescript</groupId>
-  <artifactId>sample-web-app</artifactId>
+  <artifactId>java2typescript-jaxrs</artifactId>
   <version>0.1-SNAPSHOT</version>
   <versioning>
     <snapshot>
-      <timestamp>20140104.154933</timestamp>
+      <timestamp>20140104.154943</timestamp>
       <buildNumber>2</buildNumber>
     </snapshot>
-    <lastUpdated>20140104154933</lastUpdated>
+    <lastUpdated>20140104154943</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>0.1-20140104.154933-2</value>
-        <updated>20140104154933</updated>
+        <value>0.1-20140104.154943-2</value>
+        <updated>20140104154943</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>0.1-20140104.154933-2</value>
-        <updated>20140104154933</updated>
+        <value>0.1-20140104.154943-2</value>
+        <updated>20140104154943</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
