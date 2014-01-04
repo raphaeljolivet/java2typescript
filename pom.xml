@@ -10,6 +10,7 @@
 	<properties>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
+    	<github.global.server>github</github.global.server>
 	</properties>
 
 	<modules>
@@ -18,7 +19,7 @@
 		<module>java2typescript-maven-plugin</module>
 		<module>sample-web-app</module>
 	</modules>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -27,6 +28,20 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>local-target</name>
+			<url>file://${project.build.directory}/mvn-repo</url>
+		</repository>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:git@github.com:raphaeljolivet/jackson-module-typescript.git</connection>
+		<url>scm:git:git@github.com:raphaeljolivet/jackson-module-typescript.git</url>
+		<developerConnection>scm:git:git@github.com:raphaeljolivet/jackson-module-typescript.git</developerConnection>
+	</scm>
 
 	<reporting>
 		<plugins>
@@ -37,5 +52,34 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	
+	<build>
+    <plugins>
+        <plugin>
+            <groupId>com.github.github</groupId>
+            <artifactId>site-maven-plugin</artifactId>
+            <version>0.8</version>
+            <configuration>
+                <message>Maven artifacts for ${project.version}</message>  
+                <noJekyll>true</noJekyll>
+                <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> 
+                <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+                <includes><include>**/*</include></includes>
+                <repositoryName>java2typescript</repositoryName>
+                <repositoryOwner>raphaeljolivet</repositoryOwner>
+            	<merge>true</merge>
+            </configuration>
+            <executions>
+              <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+              <execution>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+                <phase>deploy</phase>
+              </execution>
+            </executions>
+        </plugin>
+    </plugins>
+	</build>
 
 </project>
