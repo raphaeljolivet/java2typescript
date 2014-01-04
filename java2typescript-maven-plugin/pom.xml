@@ -4,7 +4,7 @@
   <parent>
     <groupId>java2typescript</groupId>
     <artifactId>java2typescript</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>java2typescript-maven-plugin</artifactId>
