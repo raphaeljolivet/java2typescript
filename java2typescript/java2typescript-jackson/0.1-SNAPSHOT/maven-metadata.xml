@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>java2typescript</groupId>
+  <artifactId>java2typescript-jackson</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20140104.154923</timestamp>
+      <buildNumber>2</buildNumber>
+    </snapshot>
+    <lastUpdated>20140104154923</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>0.1-20140104.154923-2</value>
+        <updated>20140104154923</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.1-20140104.154923-2</value>
+        <updated>20140104154923</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
