@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <plugins>
+    <plugin>
+      <name>java2typescript maven plugin</name>
+      <prefix>java2typescript</prefix>
+      <artifactId>java2typescript-maven-plugin</artifactId>
+    </plugin>
+  </plugins>
+</metadata>
