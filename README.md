@@ -9,7 +9,6 @@ This project is composed of 3 modules :
 * **[java2typescript-jaxrs](java2typescript-jaxrs)**: An extension to **java2typescript-jackson** that takes a [JAX-RS](https://jax-rs-spec.java.net/) annotated java class and produces both :
  * A Typescript definition file of the service (`.d.ts`), together with description of all needed DTO objects. 
  * An implementation `.js `of the above definition as REST client stub. 
- * 
 * **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of `.d.ts` and `.js` implementation of REST services.
 
 ## Big picture
@@ -25,8 +24,8 @@ The detailed workflow is:
 
 1. `AppRest.java` contains the annotated **JAX-RS** service definition
 2. **j2ts** compiles the REST service definition into a `.d.ts` description file, and a `.js` file (runtime implementation)
-3. `App.ts` imports and uses the `.d.ts` file.
-4. `App.ts` is compiled into a `App.js` file
+3. `App.ts` imports and uses the `.d.ts` file
+4. `App.ts` is compiled into a `App.js` file (by typescript compiler)
 
 # Usage
 
@@ -34,7 +33,7 @@ Please refer to the documentation of the [maven plugin](java2typescript-maven-pl
 
 # Example
 
-**java2typescript** handles all the HTTP REST standard itself, and present services like vanilla Typescript methods, regardless of the HTTP method / mime to use.
+**java2typescript** handles all the HTTP REST standard itself, and provide REST services as vanilla Typescript methods, regardless of the HTTP method / mime to use.
 
 Consider the following JAX-RS service 
 ```java
@@ -59,7 +58,6 @@ public interface PeopleRestService {
 
 The **[maven plugin](java2typescript-maven-plugin)** will produce the following typescript definition file :
 
-
 ```typescript
 export module People {
 
@@ -80,10 +78,10 @@ export var adapter: (httpMethod: string, path: string, getParams: Object, postPa
 }
 ```
 
-The module **People** contains definition of the DTO **Person** and the service **PeopleRestService**, it also provides 3 attributes :
+The module **People** contains both the definition of the DTO **Person** and the service **PeopleRestService**, it also provides 3 properties :
 * **rootURL** : URL of the service : Should be set before usage
 * **peopleRESTService** : An instance of the service
-* **adapter** : An apadater for REST calls using JQuery by default
+* **adapter** : An adapter for RESt service call. Set to Jquery adapter by default.
 
 Then, in your application, you can call the service like so 
 ```typescript
