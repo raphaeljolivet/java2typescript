@@ -10,7 +10,7 @@ This project is composed of 3 modules :
  * A Typescript definition file of the service (`.d.ts`), together with description of all needed DTO objects. 
  * An implementation `.js `of the above definition as REST client stub. 
 * **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of `.d.ts` and `.js` implementation of REST services.
-* A *[sample web application](sample-web-app)* that demonstrate the usage of **java2typescript**
+* A **[sample web application](sample-web-app)** that demonstrate the usage of **java2typescript**
 
 ## Big picture
 
