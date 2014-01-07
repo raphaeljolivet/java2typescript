@@ -28,7 +28,9 @@ By default the two files will be generated as :
 
 # Setup
 
-To use this plugin, you need to declare a custom repository, and bind the **generate** goal to some phase.
+To use this plugin, you first need to declare a custom repository
+
+and bind the **generate** goal to some phase.
 
 
 
