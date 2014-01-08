@@ -50,14 +50,14 @@ public class TSJsonArrayFormatVisitor extends ABaseTSJsonFormatVisitor<ArrayType
 	private static AbstractType typeScriptTypeFromJsonType(JsonFormatTypes type) {
 		switch (type) {
 		case ANY:
-			return AnyType.getIntance();
+			return AnyType.getInstance();
 		case BOOLEAN:
-			return BooleanType.getIntance();
+			return BooleanType.getInstance();
 		case ARRAY:
-			return new ArrayType(AnyType.getIntance());
+			return new ArrayType(AnyType.getInstance());
 		case INTEGER: //$FALL-THROUGH$
 		case NUMBER:
-			return NumberType.getIntance();
+			return NumberType.getInstance();
 		case STRING:
 			return StringType.getInstance();
 		default:

@@ -21,7 +21,7 @@ public class BooleanType extends AbstractPrimitiveType {
 
 	static private BooleanType instance = new BooleanType();
 
-	static public BooleanType getIntance() {
+	static public BooleanType getInstance() {
 		return instance;
 	}
 
