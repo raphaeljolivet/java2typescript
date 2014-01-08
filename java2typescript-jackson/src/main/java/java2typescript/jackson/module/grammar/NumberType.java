@@ -21,7 +21,7 @@ public class NumberType extends AbstractPrimitiveType {
 
 	static private NumberType instance = new NumberType();
 
-	static public NumberType getIntance() {
+	static public NumberType getInstance() {
 		return instance;
 	}
 

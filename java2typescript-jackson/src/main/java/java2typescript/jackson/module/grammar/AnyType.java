@@ -21,7 +21,7 @@ public class AnyType extends AbstractPrimitiveType {
 
 	static private AnyType instance = new AnyType();
 
-	static public AnyType getIntance() {
+	static public AnyType getInstance() {
 		return instance;
 	}
 
