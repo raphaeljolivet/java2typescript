@@ -18,7 +18,7 @@ Here are the parameters handled by the plugin
 | Name           | Expression        | Default value              | Meaning                  | 
 |----------------|-------------------|----------------------------|--------------------------|
 | serviceClass   | j2ts.serviceClass |  -                         | Class of REST service    |
-| moduleName     | j2ts.tsOutFolder  |  -                         | Name of output module    |
+| moduleName     | j2ts.moduleName   |  -                         | Name of output module    |
 | tsOutFolder    | j2ts.tsOutFolder  | ${project.build.directory} | Output folder for ts file|
 | jsOutFolder    | j2ts.jsOutFolder  | ${project.build.directory} | Output folder for js file|
 
@@ -28,7 +28,9 @@ By default the two files will be generated as :
 
 # Setup
 
-To use this plugin, you first need to declare a custom repository
+To use this plugin, you first need to declare a custom repository :
+
+**IN PROGRESS**
 
 and bind the **generate** goal to some phase.
 
