@@ -138,7 +138,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 
 	@Override
 	public void property(String name) throws JsonMappingException {
-		addField(name, AnyType.getIntance());
+		addField(name, AnyType.getInstance());
 	}
 
 	@Override
@@ -154,7 +154,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 
 	@Override
 	public void optionalProperty(String name) throws JsonMappingException {
-		addField(name, AnyType.getIntance());
+		addField(name, AnyType.getInstance());
 	}
 
 	protected AbstractType getTSTypeForProperty(BeanProperty writer) throws JsonMappingException {
@@ -174,7 +174,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 				}
 				return getTSTypeForHandler(this, ser, type);
 			} else {
-				return AnyType.getIntance();
+				return AnyType.getInstance();
 			}
 
 		} catch (Exception e) {

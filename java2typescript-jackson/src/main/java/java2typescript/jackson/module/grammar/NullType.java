@@ -21,7 +21,7 @@ public class NullType extends AbstractPrimitiveType {
 
 	static private NullType instance = new NullType();
 
-	static public NullType getIntance() {
+	static public NullType getInstance() {
 		return instance;
 	}
 

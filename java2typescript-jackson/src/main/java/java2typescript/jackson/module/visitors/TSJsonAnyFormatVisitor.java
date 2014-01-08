@@ -22,6 +22,6 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 public class TSJsonAnyFormatVisitor extends ABaseTSJsonFormatVisitor<AnyType> implements JsonAnyFormatVisitor {
 	public TSJsonAnyFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = AnyType.getIntance();
+		type = AnyType.getInstance();
 	}
 }
