@@ -26,6 +26,6 @@ public class BooleanType extends AbstractPrimitiveType {
 	}
 
 	private BooleanType() {
-		super("bool");
+		super("boolean");
 	}
 }

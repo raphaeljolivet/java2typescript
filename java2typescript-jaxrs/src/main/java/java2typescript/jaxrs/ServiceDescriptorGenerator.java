@@ -283,7 +283,7 @@ public class ServiceDescriptorGenerator {
 		adapterFuncType.getParameters().put("path", StringType.getInstance());
 		adapterFuncType.getParameters().put("getParams", ClassType.getObjectClass());
 		adapterFuncType.getParameters().put("postParams", ClassType.getObjectClass());
-		adapterFuncType.getParameters().put("body", AnyType.getIntance());
+		adapterFuncType.getParameters().put("body", AnyType.getInstance());
 
 		module.getVars().put(ROOT_URL_VAR, StringType.getInstance());
 		module.getVars().put(ADAPTER_VAR, adapterFuncType);

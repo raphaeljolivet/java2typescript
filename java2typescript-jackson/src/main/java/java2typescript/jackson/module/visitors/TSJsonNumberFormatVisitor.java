@@ -27,7 +27,7 @@ public class TSJsonNumberFormatVisitor extends ABaseTSJsonFormatVisitor<NumberTy
 
 	public TSJsonNumberFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = NumberType.getIntance();
+		type = NumberType.getInstance();
 	}
 
 	@Override

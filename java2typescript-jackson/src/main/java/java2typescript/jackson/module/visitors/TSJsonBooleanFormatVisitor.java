@@ -26,7 +26,7 @@ public class TSJsonBooleanFormatVisitor extends ABaseTSJsonFormatVisitor<Boolean
 
 	public TSJsonBooleanFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
-		type = BooleanType.getIntance();
+		type = BooleanType.getInstance();
 	}
 
 	@Override
