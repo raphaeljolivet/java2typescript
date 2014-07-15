@@ -1,0 +1,193 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Java2typescript</title>
+  <meta name="description" content="A bridge between a Java model, REST services and Typescript definition">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Java2typescript</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">A bridge between a Java model, REST services and Typescript definition</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/raphaeljolivet/java2typescript/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/raphaeljolivet/java2typescript/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/raphaeljolivet/java2typescript" class="code">View Java2typescript on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h2>
+<a name="purpose" class="anchor" href="#purpose"><span class="octicon octicon-link"></span></a>Purpose</h2>
+
+<p><strong>Java2Typescript</strong> provides a bridge between a <strong>Java</strong> REST service definition and a <strong>Typescript</strong> client. </p>
+
+<p>It enables to expose the full DTO model and REST services API as a clean typescript definition file, thus enabling strong type checking on the model of your application.</p>
+
+<p>This project is composed of 3 modules :</p>
+
+<ul>
+<li>
+<strong><a href="java2typescript-jackson">java2typescript-jackson</a></strong>: A <a href="http://jackson.codehaus.org/">Jackson</a> module that generate <strong>typescript</strong> definition files for Java classes, using a Jackson ObjectMapper.</li>
+<li>
+<strong><a href="java2typescript-jaxrs">java2typescript-jaxrs</a></strong>: An extension to <strong>java2typescript-jackson</strong> that takes a <a href="https://jax-rs-spec.java.net/">JAX-RS</a> annotated java class and produces both :
+
+<ul>
+<li>A Typescript definition file of the service (<code>.d.ts</code>), together with description of all needed DTO objects. </li>
+<li>An implementation <code>.js</code>of the above definition as REST client stub. </li>
+</ul>
+</li>
+<li>
+<strong><a href="java2typescript-maven-plugin">java2typescript-maven-plugin</a></strong>: A maven plugin to automate the generation of <code>.d.ts</code> and <code>.js</code> implementation of REST services.</li>
+<li>A <strong><a href="sample-web-app">sample web application</a></strong> that demonstrate the usage of <strong>java2typescript</strong>
+</li>
+</ul><h2>
+<a name="big-picture" class="anchor" href="#big-picture"><span class="octicon octicon-link"></span></a>Big picture</h2>
+
+<p>Here is a schema of the workflow for a typical project using <strong>j2ts</strong> :
+<img src="img/j2ts-workflow.png" alt="j2ts workflow"></p>
+
+<p>There are only two source files here :</p>
+
+<ul>
+<li>Server side: <code>AppRest.java</code> with annotated JAX-RS services</li>
+<li>Client side: <code>App.ts</code> </li>
+</ul><p>The detailed workflow is:</p>
+
+<ol>
+<li>
+<code>AppRest.java</code> contains the annotated <strong>JAX-RS</strong> service definition</li>
+<li>
+<strong>j2ts</strong> compiles the REST service definition into a <code>.d.ts</code> description file, and a <code>.js</code> file (runtime implementation)</li>
+<li>
+<code>App.ts</code> imports and uses the <code>.d.ts</code> file</li>
+<li>
+<code>App.ts</code> is compiled into a <code>App.js</code> file (by typescript compiler)</li>
+</ol><h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>Please refer to the documentation of the <a href="java2typescript-maven-plugin">maven plugin</a> and the example below</p>
+
+<h1>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h1>
+
+<p><strong>java2typescript</strong> handles all the HTTP REST standard itself, and provide REST services as vanilla Typescript methods, regardless of the HTTP method / mime to use.</p>
+
+<p>Consider the following JAX-RS service </p>
+
+<div class="highlight highlight-java"><pre><span class="nd">@Path</span><span class="o">(</span> <span class="s">"/people"</span> <span class="o">)</span> 
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PeopleRestService</span> <span class="o">{</span>
+
+
+    <span class="nd">@Produces</span><span class="o">(</span> <span class="o">{</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span> <span class="o">}</span> <span class="o">)</span>
+    <span class="nd">@GET</span>
+    <span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span> <span class="n">Person</span> <span class="o">&gt;</span> <span class="n">getPeoples</span><span class="o">(</span> <span class="nd">@QueryParam</span><span class="o">(</span> <span class="s">"page"</span><span class="o">)</span> <span class="nd">@DefaultValue</span><span class="o">(</span> <span class="s">"1"</span> <span class="o">)</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">page</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">peopleService</span><span class="o">.</span><span class="na">getPeople</span><span class="o">(</span> <span class="n">page</span><span class="o">,</span> <span class="mi">5</span> <span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Produces</span><span class="o">(</span> <span class="o">{</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span> <span class="o">}</span> <span class="o">)</span>
+    <span class="nd">@Path</span><span class="o">(</span> <span class="s">"/{email}"</span> <span class="o">)</span>
+    <span class="nd">@GET</span>
+    <span class="kd">public</span> <span class="n">Person</span> <span class="nf">getPeople</span><span class="o">(</span> <span class="nd">@PathParam</span><span class="o">(</span> <span class="s">"email"</span> <span class="o">)</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">email</span> <span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">peopleService</span><span class="o">.</span><span class="na">getByEmail</span><span class="o">(</span> <span class="n">email</span> <span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>The <strong><a href="java2typescript-maven-plugin">maven plugin</a></strong> will produce the following typescript definition file :</p>
+
+<div class="highlight highlight-typescript"><pre><span class="kr">export</span> <span class="kr">module</span> <span class="nx">People</span> <span class="p">{</span>
+
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">PeopleRestService</span> <span class="p">{</span>
+    <span class="nx">getPeopleList</span><span class="p">(</span><span class="nx">page</span>: <span class="kt">number</span><span class="p">)</span><span class="o">:</span> <span class="nx">Person</span><span class="p">[];</span>
+    <span class="nx">getPeople</span><span class="p">(</span><span class="nx">email</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Person</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kr">interface</span> <span class="nx">Person</span> <span class="p">{</span>
+    <span class="nx">email</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">firstName</span>: <span class="kt">string</span><span class="p">;</span>
+    <span class="nx">lastName</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="kd">var</span> <span class="nx">rootUrl</span>: <span class="kt">string</span><span class="p">;</span>
+<span class="kr">export</span> <span class="kd">var</span> <span class="nx">peopleRestService</span>: <span class="kt">PeopleRestService</span><span class="p">;</span>
+<span class="kr">export</span> <span class="kd">var</span> <span class="nx">adapter</span><span class="o">:</span> <span class="p">(</span><span class="nx">httpMethod</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">path</span>: <span class="kt">string</span><span class="p">,</span> <span class="nx">getParams</span>: <span class="kt">Object</span><span class="p">,</span> <span class="nx">postParams</span>: <span class="kt">Object</span><span class="p">,</span> <span class="nx">body</span>: <span class="kt">any</span><span class="p">)</span><span class="o">=&gt;</span> <span class="k">void</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>The module <strong>People</strong> contains both the definition of the DTO <strong>Person</strong> and the service <strong>PeopleRestService</strong>, it also provides 3 properties :</p>
+
+<ul>
+<li>
+<strong>rootURL</strong> : URL of the service : Should be set before usage</li>
+<li>
+<strong>peopleRESTService</strong> : An instance of the service</li>
+<li>
+<strong>adapter</strong> : An adapter for RESt service call. Set to Jquery adapter by default.</li>
+</ul><p>Then, in your application, you can call the service like so </p>
+
+<div class="highlight highlight-typescript"><pre><span class="c1">/// &lt;reference path="People.d.ts" /&gt;</span>
+<span class="kr">import</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">People</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">Person</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">Person</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">prs</span> <span class="o">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">peopleRestService</span><span class="p">;</span>
+
+<span class="nx">p</span><span class="p">.</span><span class="nx">rootUrl</span> <span class="o">=</span> <span class="s2">"http://someurl/root/"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">personList</span> : <span class="kt">Person</span><span class="p">[]</span> <span class="o">=</span> <span class="nx">prs</span><span class="p">.</span><span class="nx">getPeopleList</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">onePerson</span> : <span class="kt">Person</span> <span class="o">=</span> <span class="nx">prs</span><span class="p">.</span><span class="nx">getPeople</span><span class="p">(</span><span class="s2">"rrr@eee.com"</span><span class="p">);</span>
+
+</pre></div>
+
+<p>Don't forget to import the generated file <strong>People.js</strong> in the final HTML page.</p>
+
+<h1>
+<a name="licence" class="anchor" href="#licence"><span class="octicon octicon-link"></span></a>Licence</h1>
+
+<p>This project is licenced under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache v2.0 Licence</a></p>
+
+<h1>
+<a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h1>
+
+<p>Jackson module is inspired from the <a href="https://github.com/FasterXML/jackson-module-jsonSchema">jsonSchema module</a></p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/raphaeljolivet" class="avatar"><img src="https://avatars1.githubusercontent.com/u/1201600?s=60" width="48" height="48"/></a> <a href="https://github.com/raphaeljolivet">raphaeljolivet</a> maintains <a href="https://github.com/raphaeljolivet/java2typescript">Java2typescript</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br/>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/raphaeljolivet/java2typescript/tarball/master" class="tar">tar</a><a href="https://github.com/raphaeljolivet/java2typescript/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
