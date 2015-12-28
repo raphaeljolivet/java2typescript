@@ -15,15 +15,14 @@
  ******************************************************************************/
 package java2typescript.jackson.module.grammar;
 
-import static java.lang.String.format;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
+import java2typescript.jackson.module.writer.InternalModuleFormatWriter;
 
 public class Module {
 
@@ -57,23 +56,7 @@ public class Module {
 	}
 
 	public void write(Writer writer) throws IOException {
-
-		writer.write(format("export module %s {\n\n", name));
-
-		for (AbstractNamedType type : namedTypes.values()) {
-			writer.write("export ");
-			type.writeDef(writer);
-			writer.write("\n\n");
-		}
-
-		for (Entry<String, AbstractType> entry : vars.entrySet()) {
-			writer.write("export var " + entry.getKey() + ": ");
-			entry.getValue().write(writer);
-			writer.write(";\n");
-		}
-
-		writer.write("}\n");
-		writer.flush();
+		new InternalModuleFormatWriter().write(this, writer);
 	}
 
 }
