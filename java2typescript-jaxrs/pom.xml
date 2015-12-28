@@ -13,8 +13,11 @@
 		<version>0.2-SNAPSHOT</version>
 	</parent>
 
+	<groupId>java2typescript</groupId>
 	<artifactId>java2typescript-jaxrs</artifactId>
 	<name>java2typescript jaxrs</name>
+	<version>0.2-SNAPSHOT</version>
+	
 	<description>A module to generate JSON descriptor and Typescript definition out of a REST Service, out of JAX-RS annotations</description>
 	<dependencies>
 		<dependency>
@@ -42,6 +45,7 @@
 			<artifactId>java2typescript-jackson</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>java2typescript</groupId>
 			<artifactId>sample-web-app</artifactId>

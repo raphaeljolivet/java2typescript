@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<groupId>java2typescript</groupId>
 	<artifactId>java2typescript</artifactId>
 	<version>0.2-SNAPSHOT</version>
@@ -7,6 +8,7 @@
 	<name>java2typescript</name>
 
 	<properties>
+		<java2typescript.version>0.2-SNAPSHOT</java2typescript.version>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
     	<github.global.server>github</github.global.server>
@@ -16,7 +18,8 @@
 		<module>java2typescript-jackson</module>
 		<module>java2typescript-jaxrs</module>
 		<module>java2typescript-maven-plugin</module>
-		<module>sample-web-app</module>
+		<module>sample-web-app-server</module>
+		<module>sample-web-app-client</module>
 	</modules>
 
 	<dependencies>
