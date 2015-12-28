@@ -18,18 +18,22 @@ package java2typescript.jackson.module;
 import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java2typescript.jackson.module.DefinitionGenerator;
-import java2typescript.jackson.module.grammar.Module;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
+
+import java2typescript.jackson.module.grammar.Module;
 
 public class DefinitionGeneratorTest {
 
@@ -70,7 +74,7 @@ public class DefinitionGeneratorTest {
 		ObjectMapper mapper = new ObjectMapper();
 
 		DefinitionGenerator generator = new DefinitionGenerator(mapper);
-		Writer out = new OutputStreamWriter(System.out);
+		Writer out = new StringWriter();
 
 		Module module = generator.generateTypeScript(//
 				"modName", //
@@ -81,5 +85,19 @@ public class DefinitionGeneratorTest {
 		module.write(out);
 
 		out.close();
+
+		System.out.println(out);
+
+		Assert.assertEquals(getExpectedOutput(), out.toString());
+	}
+
+	private String getExpectedOutput() {
+		URL url = Resources.getResource("java2typescript/jackson/module/DefinitionGeneratorTest-expectedOutput.d.ts");
+		try {
+			return Resources.toString(url, Charsets.UTF_8);
+		}
+		catch (IOException e) {
+			throw new RuntimeException("failed to read content of "+url, e);
+		}
 	}
 }
