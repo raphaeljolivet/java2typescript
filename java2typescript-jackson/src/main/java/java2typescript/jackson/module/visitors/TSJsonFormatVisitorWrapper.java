@@ -35,7 +35,8 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNumberFormatVisitor
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
 
-public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor implements JsonFormatVisitorWrapper {
+public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor implements
+		JsonFormatVisitorWrapper {
 
 	public TSJsonFormatVisitorWrapper(ABaseTSJsonFormatVisitor parentHolder) {
 		super(parentHolder);
@@ -67,7 +68,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 	}
 
 	/** Either Java simple name or @JsonTypeName annotation */
-	private String getName(JavaType type) {
+	public static String getName(JavaType type) {
 		JsonTypeName typeName = type.getRawClass().getAnnotation(JsonTypeName.class);
 		if (typeName != null) {
 			return typeName.value();
@@ -83,7 +84,8 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 		AbstractNamedType namedType = getModule().getNamedTypes().get(name);
 
 		if (namedType == null) {
-			TSJsonObjectFormatVisitor visitor = new TSJsonObjectFormatVisitor(this, name, javaType.getRawClass());
+			TSJsonObjectFormatVisitor visitor = new TSJsonObjectFormatVisitor(this, name, javaType
+					.getRawClass());
 			type = visitor.getType();
 			getModule().getNamedTypes().put(visitor.getType().getName(), visitor.getType());
 			return visitor;
@@ -93,15 +95,15 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 		}
 	}
 
-	private EnumType parseEnumOrGetFromCache(JavaType javaType) {
+	public static EnumType parseEnumOrGetFromCache(Module module, JavaType javaType) {
 		String name = getName(javaType);
-		AbstractType namedType = getModule().getNamedTypes().get(name);
+		AbstractType namedType = module.getNamedTypes().get(name);
 		if (namedType == null) {
 			EnumType enumType = new EnumType(name);
 			for (Object val : javaType.getRawClass().getEnumConstants()) {
 				enumType.getValues().add(val.toString());
 			}
-			getModule().getNamedTypes().put(name, enumType);
+			module.getNamedTypes().put(name, enumType);
 			return enumType;
 		} else {
 			return (EnumType) namedType;
@@ -121,7 +123,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 	@Override
 	public JsonStringFormatVisitor expectStringFormat(JavaType jType) throws JsonMappingException {
 		if (jType.getRawClass().isEnum()) {
-			type = parseEnumOrGetFromCache(jType);
+			type = parseEnumOrGetFromCache(getModule(), jType);
 			return null;
 		} else {
 			return setTypeAndReturn(new TSJsonStringFormatVisitor(this));
