@@ -35,6 +35,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import java2typescript.jackson.module.grammar.Module;
+import java2typescript.jackson.module.writer.ExternalModuleFormatWriter;
 
 public class DefinitionGeneratorTest {
 
@@ -82,7 +83,22 @@ public class DefinitionGeneratorTest {
 		System.out.println(out);
 
 		// Assert
-		Assert.assertEquals(getExpectedOutput(), out.toString());
+		Assert.assertEquals(getExpectedOutput(true), out.toString());
+	}
+
+	@Test
+	public void testTypeScriptDefinitionForExternalModuleFormat() throws IOException {
+		// Arrange
+		Module module = createTestModule();
+		Writer out = new StringWriter();
+
+		// Act
+		new ExternalModuleFormatWriter().write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		Assert.assertEquals(getExpectedOutput(false), out.toString());
 	}
 
 	private Module createTestModule() throws JsonMappingException {
@@ -98,8 +114,8 @@ public class DefinitionGeneratorTest {
 		return module;
 	}
 
-	private String getExpectedOutput() {
-		String format = "internal";
+	private String getExpectedOutput(boolean internalModuleFormat) {
+		String format = internalModuleFormat ? "internal" : "external";
 		URL url = Resources.getResource("java2typescript/jackson/module/DefinitionGeneratorTest-" + format + ".expectedOutput.d.ts");
 		try {
 			return Resources.toString(url, Charsets.UTF_8);
