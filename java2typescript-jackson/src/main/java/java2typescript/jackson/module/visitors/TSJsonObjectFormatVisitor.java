@@ -44,12 +44,14 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
+import java2typescript.jackson.module.Configuration;
+
 public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassType> implements JsonObjectFormatVisitor {
 
 	private Class clazz;
 
-	public TSJsonObjectFormatVisitor(ABaseTSJsonFormatVisitor<?> parentHolder, String className, Class clazz) {
-		super(parentHolder);
+	public TSJsonObjectFormatVisitor(ABaseTSJsonFormatVisitor<?> parentHolder, String className, Class clazz, Configuration conf) {
+		super(parentHolder, conf);
 		type = new ClassType(className);
 		this.clazz = clazz;
 		addPublicMethods();
@@ -133,7 +135,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 	@Override
 	public void property(String name, JsonFormatVisitable handler, JavaType propertyTypeHint)
 			throws JsonMappingException {
-		addField(name, getTSTypeForHandler(this, handler, propertyTypeHint));
+		addField(name, getTSTypeForHandler(this, handler, propertyTypeHint, conf));
 	}
 
 	@Override
@@ -149,7 +151,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 	@Override
 	public void optionalProperty(String name, JsonFormatVisitable handler, JavaType propertyTypeHint)
 			throws JsonMappingException {
-		addField(name, getTSTypeForHandler(this, handler, propertyTypeHint));
+		addField(name, getTSTypeForHandler(this, handler, propertyTypeHint, conf));
 	}
 
 	@Override
@@ -172,7 +174,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 				if (type == null) {
 					throw new IllegalStateException("Missing type for property '" + writer.getName() + "'");
 				}
-				return getTSTypeForHandler(this, ser, type);
+				return getTSTypeForHandler(this, ser, type, conf);
 			} else {
 				return AnyType.getInstance();
 			}

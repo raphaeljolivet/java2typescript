@@ -16,6 +16,8 @@
 package java2typescript.jackson.module.visitors;
 
 import java.util.Set;
+
+import java2typescript.jackson.module.Configuration;
 import java2typescript.jackson.module.grammar.BooleanType;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonBooleanFormatVisitor;
@@ -24,8 +26,8 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 public class TSJsonBooleanFormatVisitor extends ABaseTSJsonFormatVisitor<BooleanType> implements
 		JsonBooleanFormatVisitor {
 
-	public TSJsonBooleanFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonBooleanFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 		type = BooleanType.getInstance();
 	}
 
