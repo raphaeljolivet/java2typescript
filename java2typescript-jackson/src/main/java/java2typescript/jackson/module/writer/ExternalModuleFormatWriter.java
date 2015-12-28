@@ -14,6 +14,8 @@ import java2typescript.jackson.module.grammar.base.AbstractType;
  */
 public class ExternalModuleFormatWriter implements ModuleWriter {
 
+	public WriterPreferences preferences = new WriterPreferences();
+
 	@Override
 	public void write(Module module, Writer writer) throws IOException {
 		writeModuleContent(module, writer);
@@ -25,7 +27,7 @@ public class ExternalModuleFormatWriter implements ModuleWriter {
 
 		for (AbstractNamedType type : namedTypes) {
 			writer.write("export ");
-			type.writeDef(writer);
+			type.writeDef(writer, preferences);
 			writer.write("\n\n");
 		}
 

@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.Value;
+import java2typescript.jackson.module.writer.WriterPreferences;
 
 public class StaticClassType extends AbstractNamedType {
 
@@ -35,7 +36,7 @@ public class StaticClassType extends AbstractNamedType {
 	}
 
 	@Override
-	public void writeDef(Writer writer) throws IOException {
+	public void writeDef(Writer writer, WriterPreferences prefs) throws IOException {
 		writer.write(format("class %s {\n", name));
 		for (Entry<String, Value> entry : fields.entrySet()) {
 			writer.write(format("    static %s: ", entry.getKey()));

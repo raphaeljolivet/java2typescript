@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
+import java2typescript.jackson.module.writer.WriterPreferences;
 
 public class ClassType extends AbstractNamedType {
 
@@ -43,7 +44,7 @@ public class ClassType extends AbstractNamedType {
 	}
 
 	@Override
-	public void writeDef(Writer writer) throws IOException {
+	public void writeDef(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("interface %s {\n", name));
 		for (Entry<String, AbstractType> entry : fields.entrySet()) {
 			writer.write(format("    %s: ", entry.getKey()));

@@ -22,6 +22,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
+import java2typescript.jackson.module.writer.WriterPreferences;
 
 
 public class EnumType extends AbstractNamedType {
@@ -33,7 +34,7 @@ public class EnumType extends AbstractNamedType {
 	}
 
 	@Override
-	public void writeDef(Writer writer) throws IOException {
+	public void writeDef(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("enum %s {\n", name));
 		for (String value : values) {
 			writer.write(format("    %s,\n", value));
