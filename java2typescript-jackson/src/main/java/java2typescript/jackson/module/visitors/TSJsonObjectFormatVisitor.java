@@ -167,6 +167,12 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 		if (type.getRawClass().equals(Void.TYPE)) {
 			return VoidType.getInstance();
 		}
+
+		AbstractType customType = conf.getCustomTypes().get(type.getRawClass().getName());
+		if(customType != null) {
+			return customType;
+		}
+
 		try {
 			JsonSerializer<Object> ser = getSer(writer);
 
