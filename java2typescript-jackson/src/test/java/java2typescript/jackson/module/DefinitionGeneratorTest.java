@@ -29,11 +29,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 
 import java2typescript.jackson.module.grammar.Module;
+import java2typescript.jackson.module.writer.ExternalModuleFormatWriter;
 
 public class DefinitionGeneratorTest {
 
@@ -70,34 +72,56 @@ public class DefinitionGeneratorTest {
 	}
 
 	@Test
-	public void testTypeScriptDefinition() throws IOException {
+	public void testTypeScriptDefinitionForInternalModuleFormat() throws IOException {
+		// Arrange
+		Module module = createTestModule();
+		Writer out = new StringWriter();
+
+		// Act
+		module.write(out); // for backwards compatibility the same as `new InternalModuleFormatWriter().write(module, out);`
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		Assert.assertEquals(getExpectedOutput(true), out.toString());
+	}
+
+	@Test
+	public void testTypeScriptDefinitionForExternalModuleFormat() throws IOException {
+		// Arrange
+		Module module = createTestModule();
+		Writer out = new StringWriter();
+
+		// Act
+		new ExternalModuleFormatWriter().write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		Assert.assertEquals(getExpectedOutput(false), out.toString());
+	}
+
+	private Module createTestModule() throws JsonMappingException {
 		ObjectMapper mapper = new ObjectMapper();
 
 		DefinitionGenerator generator = new DefinitionGenerator(mapper);
-		Writer out = new StringWriter();
 
 		Module module = generator.generateTypeScript(//
 				"modName", //
 				newArrayList(//
 						TestClass.class, //
 						StringClass.class));
-
-		module.write(out);
-
-		out.close();
-
-		System.out.println(out);
-
-		Assert.assertEquals(getExpectedOutput(), out.toString());
+		return module;
 	}
 
-	private String getExpectedOutput() {
-		URL url = Resources.getResource("java2typescript/jackson/module/DefinitionGeneratorTest-expectedOutput.d.ts");
+	private String getExpectedOutput(boolean internalModuleFormat) {
+		String format = internalModuleFormat ? "internal" : "external";
+		URL url = Resources.getResource("java2typescript/jackson/module/DefinitionGeneratorTest-" + format + ".expectedOutput.d.ts");
 		try {
 			return Resources.toString(url, Charsets.UTF_8);
 		}
 		catch (IOException e) {
-			throw new RuntimeException("failed to read content of "+url, e);
+			throw new RuntimeException("failed to read content of " + url, e);
 		}
 	}
 }
