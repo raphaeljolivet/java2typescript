@@ -16,6 +16,8 @@
 package java2typescript.jackson.module.visitors;
 
 import java.util.Set;
+
+import java2typescript.jackson.module.Configuration;
 import java2typescript.jackson.module.grammar.NumberType;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonIntegerFormatVisitor;
@@ -25,8 +27,8 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 public class TSJsonNumberFormatVisitor extends ABaseTSJsonFormatVisitor<NumberType> implements JsonNumberFormatVisitor,
 		JsonIntegerFormatVisitor {
 
-	public TSJsonNumberFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonNumberFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 		type = NumberType.getInstance();
 	}
 

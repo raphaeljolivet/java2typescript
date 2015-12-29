@@ -15,13 +15,14 @@
  ******************************************************************************/
 package java2typescript.jackson.module.visitors;
 
+import java2typescript.jackson.module.Configuration;
 import java2typescript.jackson.module.grammar.AnyType;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 
 public class TSJsonAnyFormatVisitor extends ABaseTSJsonFormatVisitor<AnyType> implements JsonAnyFormatVisitor {
-	public TSJsonAnyFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonAnyFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 		type = AnyType.getInstance();
 	}
 }

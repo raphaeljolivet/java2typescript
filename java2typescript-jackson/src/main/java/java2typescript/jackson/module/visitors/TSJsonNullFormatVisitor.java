@@ -15,13 +15,14 @@
  ******************************************************************************/
 package java2typescript.jackson.module.visitors;
 
+import java2typescript.jackson.module.Configuration;
 import java2typescript.jackson.module.grammar.NullType;
 
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNullFormatVisitor;
 
 public class TSJsonNullFormatVisitor extends ABaseTSJsonFormatVisitor<NullType> implements JsonNullFormatVisitor {
-	public TSJsonNullFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonNullFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 		type = NullType.getInstance();
 	}
 }

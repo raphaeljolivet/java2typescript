@@ -34,6 +34,8 @@ import java2typescript.jackson.module.writer.ExternalModuleFormatWriter;
 
 public class DefinitionGeneratorTest {
 
+	private Configuration conf = new Configuration();
+
 	@JsonTypeName("ChangedEnumName")
 	static enum Enum {
 		VAL1, VAL2, VAL3
@@ -97,6 +99,6 @@ public class DefinitionGeneratorTest {
 	}
 
 	private Module createTestModule() throws JsonMappingException {
-		return TestUtil.createTestModule(TestClass.class, StringClass.class);
+		return TestUtil.createTestModule(conf, TestClass.class, StringClass.class);
 	}
 }

@@ -15,6 +15,7 @@
  ******************************************************************************/
 package java2typescript.jackson.module.visitors;
 
+import java2typescript.jackson.module.Configuration;
 import java2typescript.jackson.module.grammar.AnyType;
 import java2typescript.jackson.module.grammar.ArrayType;
 import java2typescript.jackson.module.grammar.BooleanType;
@@ -30,14 +31,14 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitable;
 
 public class TSJsonArrayFormatVisitor extends ABaseTSJsonFormatVisitor<ArrayType> implements JsonArrayFormatVisitor {
 
-	public TSJsonArrayFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonArrayFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 		type = new ArrayType();
 	}
 
 	@Override
 	public void itemsFormat(JsonFormatVisitable handler, JavaType elementType) throws JsonMappingException {
-		TSJsonFormatVisitorWrapper visitorWrapper = new TSJsonFormatVisitorWrapper(this);
+		TSJsonFormatVisitorWrapper visitorWrapper = new TSJsonFormatVisitorWrapper(this, conf);
 		handler.acceptJsonFormatVisitor(visitorWrapper, elementType);
 		type.setItemType(visitorWrapper.getType());
 	}

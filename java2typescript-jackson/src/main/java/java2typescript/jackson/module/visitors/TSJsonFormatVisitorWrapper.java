@@ -35,15 +35,17 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNumberFormatVisitor
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonStringFormatVisitor;
 
+import java2typescript.jackson.module.Configuration;
+
 public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor implements
 		JsonFormatVisitorWrapper {
 
-	public TSJsonFormatVisitorWrapper(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonFormatVisitorWrapper(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 	}
 
-	public TSJsonFormatVisitorWrapper(Module module) {
-		super(module);
+	public TSJsonFormatVisitorWrapper(Module module, Configuration conf) {
+		super(module, conf);
 	}
 
 	private <T extends ABaseTSJsonFormatVisitor<?>> T setTypeAndReturn(T actualVisitor) {
@@ -53,15 +55,14 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 
 	/** Visit recursively the type, or return a cached response */
 	public static AbstractType getTSTypeForHandler(ABaseTSJsonFormatVisitor<?> baseVisitor,
-			JsonFormatVisitable handler, JavaType typeHint) throws JsonMappingException {
+			JsonFormatVisitable handler, JavaType typeHint, Configuration conf) throws JsonMappingException {
 
 		AbstractType computedType = baseVisitor.getComputedTypes().get(typeHint);
 
 		if (computedType != null) {
 			return computedType;
 		}
-
-		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(baseVisitor);
+		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(baseVisitor, conf);
 		handler.acceptJsonFormatVisitor(visitor, typeHint);
 		baseVisitor.getComputedTypes().put(typeHint, visitor.getType());
 		return visitor.getType();
@@ -85,7 +86,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 
 		if (namedType == null) {
 			TSJsonObjectFormatVisitor visitor = new TSJsonObjectFormatVisitor(this, name, javaType
-					.getRawClass());
+					.getRawClass(), conf);
 			type = visitor.getType();
 			getModule().getNamedTypes().put(visitor.getType().getName(), visitor.getType());
 			return visitor;
@@ -117,7 +118,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 
 	@Override
 	public JsonArrayFormatVisitor expectArrayFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonArrayFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonArrayFormatVisitor(this, conf));
 	}
 
 	@Override
@@ -126,38 +127,38 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 			type = parseEnumOrGetFromCache(getModule(), jType);
 			return null;
 		} else {
-			return setTypeAndReturn(new TSJsonStringFormatVisitor(this));
+			return setTypeAndReturn(new TSJsonStringFormatVisitor(this, conf));
 		}
 	}
 
 	@Override
 	public JsonNumberFormatVisitor expectNumberFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonNumberFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonNumberFormatVisitor(this, conf));
 	}
 
 	@Override
 	public JsonIntegerFormatVisitor expectIntegerFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonNumberFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonNumberFormatVisitor(this, conf));
 	}
 
 	@Override
 	public JsonBooleanFormatVisitor expectBooleanFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonBooleanFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonBooleanFormatVisitor(this, conf));
 	}
 
 	@Override
 	public JsonNullFormatVisitor expectNullFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonNullFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonNullFormatVisitor(this, conf));
 	}
 
 	@Override
 	public JsonAnyFormatVisitor expectAnyFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonAnyFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonAnyFormatVisitor(this, conf));
 	}
 
 	@Override
 	public JsonMapFormatVisitor expectMapFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonMapFormatVisitor(this));
+		return setTypeAndReturn(new TSJsonMapFormatVisitor(this, conf));
 	}
 
 }
