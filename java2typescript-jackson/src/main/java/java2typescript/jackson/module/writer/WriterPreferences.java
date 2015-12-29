@@ -5,8 +5,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Strings;
-
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 
 public class WriterPreferences {
@@ -51,7 +49,12 @@ public class WriterPreferences {
 	}
 
 	public String getIndentation() {
-		return Strings.repeat(indentationStep, indentationLevel);
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		while (i++ < indentationLevel) {
+			sb.append(indentationStep);
+		}
+		return sb.toString();
 	}
 
 	public void setIndentationStep(String indentation) {

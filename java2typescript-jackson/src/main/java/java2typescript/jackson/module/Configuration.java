@@ -1,14 +1,18 @@
 package java2typescript.jackson.module;
 
-import com.google.common.collect.ImmutableMap;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import java2typescript.jackson.module.grammar.ArrayType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
 public class Configuration {
-	private ImmutableMap<String, AbstractType> customTypes = ImmutableMap.<String, AbstractType> builder().build();
+	private Map<String, AbstractType> customTypes = Collections.emptyMap();
 
-	public ImmutableMap<String, AbstractType> getCustomTypes() {
+	public Map<String, AbstractType> getCustomTypes() {
 		return customTypes;
 	}
 
@@ -23,9 +27,9 @@ public class Configuration {
 	}
 
 	public void addType(String className, AbstractType tsType) {
-		customTypes = ImmutableMap.<String, AbstractType> builder() //
-			.putAll(customTypes) //
-			.put(className, tsType) //
-			.build();
+		Map<String, AbstractType> tmp = new HashMap<String, AbstractType>();
+		tmp.putAll(customTypes);
+		tmp.put(className, tsType);
+		customTypes = Collections.unmodifiableMap(tmp);
 	}
 }
