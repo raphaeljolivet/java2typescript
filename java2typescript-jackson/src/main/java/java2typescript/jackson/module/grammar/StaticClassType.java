@@ -38,14 +38,16 @@ public class StaticClassType extends AbstractNamedType {
 	@Override
 	public void writeDefInternal(Writer writer, WriterPreferences prefs) throws IOException {
 		writer.write(format("class %s {\n", name));
+		prefs.increaseIndentation();
 		for (Entry<String, Value> entry : fields.entrySet()) {
-			writer.write(format("    static %s: ", entry.getKey()));
+			writer.write(format("%sstatic %s: ", prefs.getIndentation(), entry.getKey()));
 			entry.getValue().getType().write(writer);
 			writer.write(" = ");
 			writer.write(entry.getValue().getValue().toString());
 			writer.write(";\n");
 		}
-		writer.write("}");
+		prefs.decreaseIndention();
+		writer.write(prefs.getIndentation() + "}");
 	}
 
 	public Map<String, Value> getStaticFields() {

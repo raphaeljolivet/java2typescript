@@ -46,17 +46,19 @@ public class ClassType extends AbstractNamedType {
 	@Override
 	public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("interface %s {\n", name));
+		preferences.increaseIndentation();
 		for (Entry<String, AbstractType> entry : fields.entrySet()) {
-			writer.write(format("    %s: ", entry.getKey()));
+			writer.write(format("%s%s: ", preferences.getIndentation(), entry.getKey()));
 			entry.getValue().write(writer);
 			writer.write(";\n");
 		}
 		for (String methodName : methods.keySet()) {
-			writer.write("    " + methodName);
+			writer.write(preferences.getIndentation() + methodName);
 			this.methods.get(methodName).writeNonLambda(writer);
 			writer.write(";\n");
 		}
-		writer.write("}");
+		preferences.decreaseIndention();
+		writer.write(preferences.getIndentation() + "}");
 	}
 
 	public Map<String, AbstractType> getFields() {

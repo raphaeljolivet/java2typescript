@@ -29,13 +29,13 @@ public class ExternalModuleFormatWriter implements ModuleWriter {
 		writeEnumPatternBaseClassIfNeeded(namedTypes, writer);
 
 		for (AbstractNamedType type : namedTypes) {
-			writer.write("export ");
+			writer.write(preferences.getIndentation() + "export ");
 			type.writeDef(writer, preferences);
 			writer.write("\n\n");
 		}
 
 		for (Entry<String, AbstractType> entry : module.getVars().entrySet()) {
-			writer.write("export var " + entry.getKey() + ": ");
+			writer.write(preferences.getIndentation() + "export var " + entry.getKey() + ": ");
 			entry.getValue().write(writer);
 			writer.write(";\n");
 		}
@@ -57,14 +57,15 @@ public class ExternalModuleFormatWriter implements ModuleWriter {
 		return false;
 	}
 
-	private static final String INDENT = "    ";
-
 	private void writeBaseEnum(Writer writer) throws IOException {
-		writer.write("/** base class for implementing enums with Typesafe Enum Pattern (to be able to use enum names, instead of ordinal values, in a type-safe manner) */\n");
-		writer.write("export class EnumPatternBase {\n");
-		writer.write(INDENT + "constructor(public name: string){}\n");
-		writer.write(INDENT + "toString(){ return this.name; }\n");
-		writer.write("}\n");
+		writer.write(preferences.getIndentation() + "/** base class for implementing enums with Typesafe Enum Pattern " +
+			"(to be able to use enum names, instead of ordinal values, in a type-safe manner) */\n");
+		writer.write(preferences.getIndentation() + "export class EnumPatternBase {\n");
+		preferences.increaseIndentation();
+		writer.write(preferences.getIndentation() + "constructor(public name: string){}\n");
+		writer.write(preferences.getIndentation() + "toString(){ return this.name; }\n");
+		preferences.decreaseIndention();
+		writer.write(preferences.getIndentation() + "}\n");
 	}
 
 }

@@ -36,10 +36,12 @@ public class EnumType extends AbstractNamedType {
 	@Override
 	public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("enum %s {\n", name));
+		preferences.increaseIndentation();
 		for (String value : values) {
-			writer.write(format("    %s,\n", value));
+			writer.write(format("%s%s,\n", preferences.getIndentation(), value));
 		}
-		writer.write("}");
+		preferences.decreaseIndention();
+		writer.write(preferences.getIndentation() + "}");
 	}
 
 	public List<String> getValues() {

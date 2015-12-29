@@ -13,24 +13,25 @@ import java2typescript.jackson.module.grammar.base.AbstractNamedType;
  * 3) You need to use "reflection" (instanceof) to detect if field is "enum"
  * @author Ats Uiboupin
  */
-public class EnumTypeToEnumPatternWriter implements CustomAbstractTypeWriter{
-	private static final String INDENT = "    ";
-	 
+public class EnumTypeToEnumPatternWriter implements CustomAbstractTypeWriter {
+
 	@Override
 	public boolean accepts(AbstractNamedType type, WriterPreferences preferences) {
 		return type instanceof EnumType;
 	}
-	
+
 	@Override
 	public void writeDef(AbstractNamedType type, Writer writer, WriterPreferences preferences) throws IOException {
-		EnumType enumType = (EnumType)type;
+		EnumType enumType = (EnumType) type;
 		String enumTypeName = enumType.getName();
 		writer.write(String.format("class %s extends EnumPatternBase {\n", enumTypeName));
+		preferences.increaseIndentation();
 		for (String value : enumType.getValues()) {
-			writer.write(String.format(INDENT + "static %s = new %s('%s');\n", value, enumTypeName, value));
+			writer.write(String.format(preferences.getIndentation() + "static %s = new %s('%s');\n", value, enumTypeName, value));
 		}
-		writer.write(INDENT + "constructor(name:string){super(name)}\n");
-		writer.write("}");
+		writer.write(preferences.getIndentation() + "constructor(name:string){super(name)}\n");
+		preferences.decreaseIndention();
+		writer.write(preferences.getIndentation() + "}");
 	}
 
 }

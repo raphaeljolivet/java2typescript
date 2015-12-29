@@ -62,8 +62,7 @@ public class StaticFieldExporterTest {
 	}
 
 	@Test
-	public void testTypeScriptDefinition() throws IOException, IllegalArgumentException,
-			IllegalAccessException {
+	public void testTypeScriptDefinition() throws IOException, IllegalArgumentException {
 		Writer out = new StringWriter();
 
 		ArrayList<Class<?>> classesToConvert = new ArrayList<Class<?>>();

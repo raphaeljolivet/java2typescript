@@ -36,7 +36,7 @@ public class StaticFieldExporter {
 	private static final String CLASS_NAME_EXTENSION = "Static";
 
 	public static void export(Module module, List<Class<?>> classesToConvert)
-			throws IllegalArgumentException, IllegalAccessException {
+			throws IllegalArgumentException {
 		for (Class<?> clazz : classesToConvert) {
 			if (clazz.isEnum()) {
 				continue;
@@ -47,7 +47,13 @@ public class StaticFieldExporter {
 			Field[] declaredFields = clazz.getDeclaredFields();
 			for (Field field : declaredFields) {
 				if (isPublicStaticFinal(field.getModifiers())) {
-					final Value value = constructValue(module, field.getType(), field.get(null));
+					Value value;
+					try {
+						value = constructValue(module, field.getType(), field.get(null));
+					}
+					catch (IllegalAccessException e) {
+						throw new RuntimeException("Failed to get value of field " + field, e);
+					}
 					if (value != null) {
 						staticClass.getStaticFields().put(field.getName(), value);
 					}

@@ -5,14 +5,17 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 
 public class WriterPreferences {
+	private String indentationStep = "    ";
+	private int indentationLevel = 0;
 
 	private List<CustomAbstractTypeWriter> customWriters = new ArrayList<CustomAbstractTypeWriter>();
-
 	private boolean useEnumPattern;
-
+	
 	public void useEnumPattern() {
 		addWriter(new EnumTypeToEnumPatternWriter());
 		useEnumPattern = true;
@@ -45,6 +48,22 @@ public class WriterPreferences {
 			}
 		}
 		return null;
+	}
+
+	public String getIndentation() {
+		return StringUtils.repeat(indentationStep, indentationLevel);
+	}
+
+	public void setIndentationStep(String indentation) {
+		this.indentationStep = indentation;
+	}
+
+	public void increaseIndentation() {
+		indentationLevel++;
+	}
+
+	public void decreaseIndention() {
+		indentationLevel--;
 	}
 
 }
