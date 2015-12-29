@@ -38,5 +38,13 @@ abstract public class AbstractNamedType extends AbstractType {
 		return name;
 	}
 
-	abstract public void writeDef(Writer writer, WriterPreferences preferences) throws IOException;
+	public void writeDef(Writer writer, WriterPreferences preferences) throws IOException {
+		if(!preferences.hasCustomWriter(this)) {
+			writeDefInternal(writer, preferences);
+		} else {
+			preferences.writeDef(this, writer);
+		}
+	}
+
+	abstract public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException;
 }

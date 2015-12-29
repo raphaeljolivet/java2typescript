@@ -36,7 +36,7 @@ public class StaticClassType extends AbstractNamedType {
 	}
 
 	@Override
-	public void writeDef(Writer writer, WriterPreferences prefs) throws IOException {
+	public void writeDefInternal(Writer writer, WriterPreferences prefs) throws IOException {
 		writer.write(format("class %s {\n", name));
 		for (Entry<String, Value> entry : fields.entrySet()) {
 			writer.write(format("    static %s: ", entry.getKey()));

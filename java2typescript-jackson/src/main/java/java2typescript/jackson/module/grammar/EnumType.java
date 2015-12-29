@@ -34,7 +34,7 @@ public class EnumType extends AbstractNamedType {
 	}
 
 	@Override
-	public void writeDef(Writer writer, WriterPreferences preferences) throws IOException {
+	public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("enum %s {\n", name));
 		for (String value : values) {
 			writer.write(format("    %s,\n", value));
