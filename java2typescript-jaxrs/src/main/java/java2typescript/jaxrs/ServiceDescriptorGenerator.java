@@ -153,7 +153,7 @@ public class ServiceDescriptorGenerator {
 
 		// Generates Typescript module out of service classses definition
 		DefinitionGenerator defGen = new DefinitionGenerator(mapper);
-		Module module = defGen.generateTypeScript(moduleName, classes);
+		Module module = defGen.generateTypeScript(moduleName, classes, null);
 
 		// For each rest service, update methods with parameter names, got from Rest service descriptor 
 		for (RestService restService : generateRestServices(classes)) {

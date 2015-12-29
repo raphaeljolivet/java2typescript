@@ -8,9 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-
-import java2typescript.jackson.module.WriterPreferencesTest.Enum;
 import java2typescript.jackson.module.grammar.Module;
 import java2typescript.jackson.module.util.ExpectedOutputChecker;
 import java2typescript.jackson.module.util.TestUtil;
@@ -46,7 +43,7 @@ public class WriterPreferencesTest {
 		ExternalModuleFormatWriter mWriter = new ExternalModuleFormatWriter();
 		mWriter.preferences.useEnumPattern();
 
-		Module module = TestUtil.createTestModule(Enum.class);
+		Module module = TestUtil.createTestModule(null, Enum.class);
 		Writer out = new StringWriter();
 
 		// Act
@@ -64,7 +61,7 @@ public class WriterPreferencesTest {
 		ExternalModuleFormatWriter mWriter = new ExternalModuleFormatWriter();
 		mWriter.preferences.useEnumPattern(); // should be ignored when no enums found
 
-		Module module = TestUtil.createTestModule(Dummy.class);
+		Module module = TestUtil.createTestModule(null, Dummy.class);
 		Writer out = new StringWriter();
 
 		// Act
@@ -83,7 +80,7 @@ public class WriterPreferencesTest {
 		writer.preferences.setIndentationStep("\t"); // custom indentation
 		writer.preferences.useEnumPattern();
 
-		Module module = TestUtil.createTestModule(TestClass.class);
+		Module module = TestUtil.createTestModule(null, TestClass.class);
 		List<Class<?>> toConvert = new ArrayList<Class<?>>();
 		toConvert.add(Constants.class);
 		StaticFieldExporter.export(module, toConvert);

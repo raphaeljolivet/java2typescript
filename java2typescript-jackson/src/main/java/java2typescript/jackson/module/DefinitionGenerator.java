@@ -43,6 +43,9 @@ public class DefinitionGenerator {
 	 */
 	public Module generateTypeScript(String moduleName, Collection<? extends Class<?>> classes, Configuration conf)
 			throws JsonMappingException {
+		if(conf == null) {
+			conf = new Configuration();
+		}
 
 		Module module = new Module(moduleName);
 		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(module, conf);
