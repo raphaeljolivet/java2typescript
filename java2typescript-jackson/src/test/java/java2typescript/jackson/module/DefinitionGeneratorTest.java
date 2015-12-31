@@ -15,26 +15,21 @@
  ******************************************************************************/
 package java2typescript.jackson.module;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 
 import java2typescript.jackson.module.grammar.Module;
+import java2typescript.jackson.module.util.ExpectedOutputChecker;
+import java2typescript.jackson.module.util.TestUtil;
 import java2typescript.jackson.module.writer.ExternalModuleFormatWriter;
 
 public class DefinitionGeneratorTest {
@@ -72,7 +67,7 @@ public class DefinitionGeneratorTest {
 	}
 
 	@Test
-	public void testTypeScriptDefinitionForInternalModuleFormat() throws IOException {
+	public void internalModuleFormat() throws IOException {
 		// Arrange
 		Module module = createTestModule();
 		Writer out = new StringWriter();
@@ -83,11 +78,11 @@ public class DefinitionGeneratorTest {
 		System.out.println(out);
 
 		// Assert
-		Assert.assertEquals(getExpectedOutput(true), out.toString());
+		ExpectedOutputChecker.checkOutputFromFile(out);
 	}
 
 	@Test
-	public void testTypeScriptDefinitionForExternalModuleFormat() throws IOException {
+	public void externalModuleFormat() throws IOException {
 		// Arrange
 		Module module = createTestModule();
 		Writer out = new StringWriter();
@@ -98,30 +93,10 @@ public class DefinitionGeneratorTest {
 		System.out.println(out);
 
 		// Assert
-		Assert.assertEquals(getExpectedOutput(false), out.toString());
+		ExpectedOutputChecker.checkOutputFromFile(out);
 	}
 
 	private Module createTestModule() throws JsonMappingException {
-		ObjectMapper mapper = new ObjectMapper();
-
-		DefinitionGenerator generator = new DefinitionGenerator(mapper);
-
-		Module module = generator.generateTypeScript(//
-				"modName", //
-				newArrayList(//
-						TestClass.class, //
-						StringClass.class));
-		return module;
-	}
-
-	private String getExpectedOutput(boolean internalModuleFormat) {
-		String format = internalModuleFormat ? "internal" : "external";
-		URL url = Resources.getResource("java2typescript/jackson/module/DefinitionGeneratorTest-" + format + ".expectedOutput.d.ts");
-		try {
-			return Resources.toString(url, Charsets.UTF_8);
-		}
-		catch (IOException e) {
-			throw new RuntimeException("failed to read content of " + url, e);
-		}
+		return TestUtil.createTestModule(null, TestClass.class, StringClass.class);
 	}
 }

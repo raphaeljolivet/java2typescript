@@ -15,7 +15,9 @@ public class InternalModuleFormatWriter extends ExternalModuleFormatWriter {
 	@Override
 	public void write(Module module, Writer writer) throws IOException {
 		writer.write(format("export module %s {\n\n", module.getName()));
+		preferences.increaseIndentation();
 		writeModuleContent(module, writer);
+		preferences.decreaseIndention();
 		writer.write("}\n");
 		writer.flush();
 	}

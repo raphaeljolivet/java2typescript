@@ -41,11 +41,14 @@ public class DefinitionGenerator {
 	 *            Class for which generating definition
 	 * @throws JsonMappingException
 	 */
-	public Module generateTypeScript(String moduleName, Collection<? extends Class<?>> classes)
+	public Module generateTypeScript(String moduleName, Collection<? extends Class<?>> classes, Configuration conf)
 			throws JsonMappingException {
+		if(conf == null) {
+			conf = new Configuration();
+		}
 
 		Module module = new Module(moduleName);
-		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(module);
+		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(module, conf);
 
 		for (Class<?> clazz : classes) {
 			mapper.acceptJsonFormatVisitor(clazz, visitor);

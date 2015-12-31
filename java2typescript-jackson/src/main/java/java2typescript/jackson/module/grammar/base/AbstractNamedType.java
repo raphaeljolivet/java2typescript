@@ -18,6 +18,8 @@ package java2typescript.jackson.module.grammar.base;
 import java.io.IOException;
 import java.io.Writer;
 
+import java2typescript.jackson.module.writer.WriterPreferences;
+
 /** Type referenced by its name and capable of writing its own definition */
 abstract public class AbstractNamedType extends AbstractType {
 
@@ -36,5 +38,13 @@ abstract public class AbstractNamedType extends AbstractType {
 		return name;
 	}
 
-	abstract public void writeDef(Writer writer) throws IOException;
+	public void writeDef(Writer writer, WriterPreferences preferences) throws IOException {
+		if(!preferences.hasCustomWriter(this)) {
+			writeDefInternal(writer, preferences);
+		} else {
+			preferences.writeDef(this, writer);
+		}
+	}
+
+	abstract public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException;
 }

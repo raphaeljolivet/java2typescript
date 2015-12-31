@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.Value;
+import java2typescript.jackson.module.writer.WriterPreferences;
 
 public class StaticClassType extends AbstractNamedType {
 
@@ -35,16 +36,18 @@ public class StaticClassType extends AbstractNamedType {
 	}
 
 	@Override
-	public void writeDef(Writer writer) throws IOException {
+	public void writeDefInternal(Writer writer, WriterPreferences prefs) throws IOException {
 		writer.write(format("class %s {\n", name));
+		prefs.increaseIndentation();
 		for (Entry<String, Value> entry : fields.entrySet()) {
-			writer.write(format("    static %s: ", entry.getKey()));
+			writer.write(format("%sstatic %s: ", prefs.getIndentation(), entry.getKey()));
 			entry.getValue().getType().write(writer);
 			writer.write(" = ");
 			writer.write(entry.getValue().getValue().toString());
 			writer.write(";\n");
 		}
-		writer.write("}");
+		prefs.decreaseIndention();
+		writer.write(prefs.getIndentation() + "}");
 	}
 
 	public Map<String, Value> getStaticFields() {

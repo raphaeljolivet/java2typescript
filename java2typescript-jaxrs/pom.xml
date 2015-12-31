@@ -48,7 +48,7 @@
 		
 		<dependency>
 			<groupId>java2typescript</groupId>
-			<artifactId>sample-web-app</artifactId>
+			<artifactId>sample-web-app-server</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>

@@ -18,14 +18,6 @@
 		<org.eclipse.jetty.version>8.1.8.v20121106</org.eclipse.jetty.version>
 	</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>java2typescript</groupId>
-			<artifactId>sample-web-app</artifactId>
-			<version>0.2-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

@@ -24,6 +24,8 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWithSerializerProvider;
 
+import java2typescript.jackson.module.Configuration;
+
 /**
  * Chained providers with a root parent holder keeping a map of already
  * compiuted types, and
@@ -40,14 +42,18 @@ public abstract class ABaseTSJsonFormatVisitor<T extends AbstractType> implement
 	private Module module;
 
 	private Map<JavaType, AbstractType> computedTypes;
+	
+	protected final Configuration conf;
 
-	public ABaseTSJsonFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
+	public ABaseTSJsonFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
 		this.parentHolder = parentHolder;
+		this.conf = conf;
 	}
 
-	public ABaseTSJsonFormatVisitor(Module module) {
+	public ABaseTSJsonFormatVisitor(Module module, Configuration conf) {
 		this.parentHolder = null;
 		this.module = module;
+		this.conf = conf;
 	}
 
 	public SerializerProvider getProvider() {

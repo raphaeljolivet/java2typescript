@@ -24,22 +24,24 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitable;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonMapFormatVisitor;
 
+import java2typescript.jackson.module.Configuration;
+
 
 public class TSJsonMapFormatVisitor extends ABaseTSJsonFormatVisitor<MapType> implements JsonMapFormatVisitor {
 
-	public TSJsonMapFormatVisitor(ABaseTSJsonFormatVisitor parentHolder) {
-		super(parentHolder);
+	public TSJsonMapFormatVisitor(ABaseTSJsonFormatVisitor parentHolder, Configuration conf) {
+		super(parentHolder, conf);
 		type = new MapType();
 	}
 
 	@Override
 	public void keyFormat(JsonFormatVisitable handler, JavaType keyType) throws JsonMappingException {
-		type.setKeyType(getTSTypeForHandler(this, handler, keyType));
+		type.setKeyType(getTSTypeForHandler(this, handler, keyType, conf));
 	}
 
 	@Override
 	public void valueFormat(JsonFormatVisitable handler, JavaType valueType) throws JsonMappingException {
-		type.setValueType(getTSTypeForHandler(this, handler, valueType));
+		type.setValueType(getTSTypeForHandler(this, handler, valueType, conf));
 	}
 
 }
