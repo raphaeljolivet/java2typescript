@@ -96,6 +96,30 @@ public class DefinitionGeneratorTest {
 		ExpectedOutputChecker.checkOutputFromFile(out);
 	}
 
+	class RecursiveTestClass {
+		public RecursiveTestClass recursive;
+		public RecursiveTestClass[] recursiveArray;
+
+		public RecursiveTestClass returnThis() {
+			return this;
+		}
+	}
+
+	@Test
+	public void classWithMethodReturningThis() throws IOException {
+		// Arrange
+		Module module = TestUtil.createTestModule(null, RecursiveTestClass.class);
+		Writer out = new StringWriter();
+
+		// Act
+		new ExternalModuleFormatWriter().write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		ExpectedOutputChecker.checkOutputFromFile(out);
+	}
+
 	private Module createTestModule() throws JsonMappingException {
 		return TestUtil.createTestModule(null, TestClass.class, StringClass.class);
 	}
