@@ -89,6 +89,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 					.getRawClass(), conf);
 			type = visitor.getType();
 			getModule().getNamedTypes().put(visitor.getType().getName(), visitor.getType());
+			visitor.addPublicMethods();
 			return visitor;
 		} else {
 			type = namedType;
