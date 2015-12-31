@@ -1,3 +1,7 @@
+## Continuous Integration
+[![Build Status](https://travis-ci.org/raphaeljolivet/java2typescript.svg)](https://travis-ci.org/raphaeljolivet/java2typescript/)
+
+
 ## Purpose
 
 **Java2Typescript** provides a bridge between a **Java** REST service definition and a **Typescript** client. 
