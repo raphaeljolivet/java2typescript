@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
@@ -115,7 +116,7 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 	private void addMethod(Method method) {
 		FunctionType function = new FunctionType();
 
-		AnnotatedMethod annotMethod = new AnnotatedMethod(method, new AnnotationMap(), null);
+		AnnotatedMethod annotMethod = new AnnotatedMethod(null, method, new AnnotationMap(), null);
 
 		function.setResultType(getTSTypeForClass(annotMethod));
 		for (int i = 0; i < annotMethod.getParameterCount(); i++) {
@@ -137,10 +138,6 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 		addField(name, getTSTypeForHandler(this, handler, propertyTypeHint, conf));
 	}
 
-	@Override
-	public void property(String name) throws JsonMappingException {
-		addField(name, AnyType.getInstance());
-	}
 
 	@Override
 	public void optionalProperty(BeanProperty writer) throws JsonMappingException {
@@ -151,11 +148,6 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 	public void optionalProperty(String name, JsonFormatVisitable handler, JavaType propertyTypeHint)
 			throws JsonMappingException {
 		addField(name, getTSTypeForHandler(this, handler, propertyTypeHint, conf));
-	}
-
-	@Override
-	public void optionalProperty(String name) throws JsonMappingException {
-		addField(name, AnyType.getInstance());
 	}
 
 	protected AbstractType getTSTypeForProperty(BeanProperty writer) throws JsonMappingException {

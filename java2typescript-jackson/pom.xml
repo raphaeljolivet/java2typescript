@@ -29,7 +29,7 @@
 		</developer>
 	</developers>
 	<properties>
-			<jackson.core.version>2.2.2</jackson.core.version>
+			<jackson.core.version>2.6.4</jackson.core.version>
 			<github.global.server>github</github.global.server>
 	</properties>
 
@@ -63,6 +63,6 @@
 	<parent>
 		<groupId>java2typescript</groupId>
 		<artifactId>java2typescript</artifactId>
-		<version>0.2-SNAPSHOT</version>
+		<version>0.3-SNAPSHOT</version>
 	</parent>
 </project>
