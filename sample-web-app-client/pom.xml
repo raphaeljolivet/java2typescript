@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>java2typescript</groupId>
 		<artifactId>java2typescript</artifactId>
-		<version>0.2-SNAPSHOT</version>
+		<version>0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>sample-web-app-client</artifactId>
@@ -23,7 +23,7 @@
 			<plugin>
 				<groupId>java2typescript</groupId>
 				<artifactId>java2typescript-maven-plugin</artifactId>
-				<version>0.2-SNAPSHOT</version>
+				<version>0.3-SNAPSHOT</version>
 				<configuration>
 					<serviceClass>com.example.rs.PeopleRestService</serviceClass>
 					<moduleName>People</moduleName>

@@ -3,12 +3,12 @@
 	
 	<groupId>java2typescript</groupId>
 	<artifactId>java2typescript</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>java2typescript</name>
 
 	<properties>
-		<java2typescript.version>0.2-SNAPSHOT</java2typescript.version>
+		<java2typescript.version>0.3-SNAPSHOT</java2typescript.version>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
     	<github.global.server>github</github.global.server>
