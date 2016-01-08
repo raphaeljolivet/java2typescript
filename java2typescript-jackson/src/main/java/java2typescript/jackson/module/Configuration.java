@@ -1,10 +1,10 @@
 package java2typescript.jackson.module;
 
-
+import java.beans.Transient;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 
 import java2typescript.jackson.module.grammar.ArrayType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
@@ -31,5 +31,12 @@ public class Configuration {
 		tmp.putAll(customTypes);
 		tmp.put(className, tsType);
 		customTypes = Collections.unmodifiableMap(tmp);
+	}
+
+	public boolean isIgnoredMethod(Method method) {
+		if (method.getAnnotation(Transient.class) != null) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -92,9 +92,9 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 				throw new RuntimeException(e);
 			}
 
-			// Ignore @Transient methods
-			if (method.getAnnotation(Transient.class) != null)
+			if(conf.isIgnoredMethod(method)) {
 				continue;
+			}
 
 			addMethod(method);
 		}
