@@ -53,6 +53,16 @@ public class ExcludedMethodsTest {
 			return null;
 		}
 
+		// this method is added to the blacklist using conf.addIngoredMethod("blacklistedMethod")
+		public String blacklistedMethod() {
+			return null;
+		}
+
+		// this method is added to the blacklist using conf.addIngoredMethod("blacklistedStaticMethod")
+		public static String blacklistedStaticMethod() {
+			return null;
+		}
+
 		// --------------- END EXCLUDED METHODS
 
 		public String instanceMetohd() {
@@ -68,6 +78,8 @@ public class ExcludedMethodsTest {
 	public void testExcludedMethods() throws IOException {
 		// Arrange
 		Configuration conf = new Configuration();
+		conf.addIngoredMethod("blacklistedMethod");
+		conf.addIngoredMethod("blacklistedStaticMethod");
 		Module module = TestUtil.createTestModule(conf, TestClass.class);
 		Writer out = new StringWriter();
 

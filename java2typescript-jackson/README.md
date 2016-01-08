@@ -15,8 +15,16 @@ When generating TypeScript from Java classes <sup>(actually when Java classes ar
 * Non-public methods
 * Methods annotated with @java.beans.Transient
 * Java Bean property getters/setters are excluded even if field doesn't exist with exact name (field is generated based on corresponding Java Bean property name instead)
+* Methods ignored by the configuration:
 
-See the [tests for excluded methods](https://github.com/raphaeljolivet/java2typescript/blob/master/java2typescript-jackson/src/test/java/java2typescript/jackson/module/ExcludedMethodsTest.java#L33-L65) for details
+```Java
+		Configuration conf = new Configuration();
+		conf.addIngoredMethod("blacklistedMethod");
+```
+
+See the [tests for excluded methods](https://github.com/raphaeljolivet/java2typescript/blob/master/java2typescript-jackson/src/test/java/java2typescript/jackson/module/ExcludedMethodsTest.java#L33-L65) for details.
+
+> Note: You can also extend the configuration and overwrite [`isIgnoredMethod`](https://github.com/raphaeljolivet/java2typescript/blob/master/java2typescript-jackson/src/main/java/java2typescript/jackson/module/Configuration.java#L44-L49) method to programmatically make the decision (most likely based on method signature: parameters, return type, declaring class, annotations, ...)
 
 
 ### Enums
