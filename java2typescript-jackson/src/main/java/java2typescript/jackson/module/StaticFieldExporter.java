@@ -36,15 +36,20 @@ public class StaticFieldExporter {
 	private static final String CLASS_NAME_EXTENSION = "Static";
 	
 	private final Module module;
+	private final TSJsonFormatVisitorWrapper tsJsonFormatVisitorWrapper;
 
-	public StaticFieldExporter(Module module) {
+	public StaticFieldExporter(Module module, Configuration conf) {
 		this.module = module;
+		if(conf == null) {
+			conf = new Configuration();
+		}
+		tsJsonFormatVisitorWrapper = new TSJsonFormatVisitorWrapper(module, conf);
 	}
 
 	/** @deprecated - use constructor and instance method instead */
 	@Deprecated
 	public static void export(Module module, List<Class<?>> classesToConvert) {
-		new StaticFieldExporter(module).export(classesToConvert);
+		new StaticFieldExporter(module, null).export(classesToConvert);
 	}
 
 	public void export(List<Class<?>> classesToConvert)
@@ -94,7 +99,7 @@ public class StaticFieldExporter {
 		} else if (type == String.class) {
 			return new Value(StringType.getInstance(), "'" + (String) rawValue + "'");
 		} else if (type.isEnum()) {
-			final EnumType enumType = TSJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module,
+			final EnumType enumType = tsJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module,
 					SimpleType.construct(type));
 			return new Value(enumType, enumType.getName() + "." + rawValue);
 		} else if (type.isArray()) {
@@ -146,7 +151,7 @@ public class StaticFieldExporter {
 		} else if (type == String.class) {
 			return StringType.getInstance();
 		} else if (type.isEnum()) {
-			return TSJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module, SimpleType
+			return tsJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module, SimpleType
 					.construct(type));
 		} else if (type.isArray()) {
 			return new ArrayType(AnyType.getInstance());

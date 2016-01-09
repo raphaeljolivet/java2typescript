@@ -80,10 +80,11 @@ public class WriterPreferencesTest {
 		writer.preferences.setIndentationStep("\t"); // custom indentation
 		writer.preferences.useEnumPattern();
 
-		Module module = TestUtil.createTestModule(null, TestClass.class);
+		Configuration conf = null; // default conf
+		Module module = TestUtil.createTestModule(conf, TestClass.class);
 		List<Class<?>> toConvert = new ArrayList<Class<?>>();
 		toConvert.add(Constants.class);
-		new StaticFieldExporter(module).export(toConvert);
+		new StaticFieldExporter(module, conf).export(toConvert);
 		Writer out = new StringWriter();
 
 		// Act
