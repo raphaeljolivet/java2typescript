@@ -58,4 +58,7 @@ public class Configuration {
 		return namingStrategy;
 	}
 
+	public void setNamingStrategy(TSTypeNamingStrategy namingStrategy) {
+		this.namingStrategy = namingStrategy;
+	}
 }
