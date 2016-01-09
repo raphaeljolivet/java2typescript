@@ -149,7 +149,12 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 
 	@Override
 	public JsonAnyFormatVisitor expectAnyFormat(JavaType type) throws JsonMappingException {
-		return setTypeAndReturn(new TSJsonAnyFormatVisitor(this, conf));
+		if ("java.lang.Object".equals(type.getRawClass().getName())) {
+			return setTypeAndReturn(new TSJsonAnyFormatVisitor(this, conf));
+		}
+		// probably just a class without fields/properties
+		useNamedClassOrParse(type);
+		return null;
 	}
 
 	@Override
