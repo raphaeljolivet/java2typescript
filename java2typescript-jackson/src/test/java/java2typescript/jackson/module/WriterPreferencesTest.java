@@ -83,7 +83,7 @@ public class WriterPreferencesTest {
 		Module module = TestUtil.createTestModule(null, TestClass.class);
 		List<Class<?>> toConvert = new ArrayList<Class<?>>();
 		toConvert.add(Constants.class);
-		StaticFieldExporter.export(module, toConvert);
+		new StaticFieldExporter(module).export(toConvert);
 		Writer out = new StringWriter();
 
 		// Act

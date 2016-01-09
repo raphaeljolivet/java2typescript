@@ -69,7 +69,7 @@ public class StaticFieldExporterTest {
 		classesToConvert.add(TestClass.class);
 
 		Module module = new Module("mod");
-		StaticFieldExporter.export(module, classesToConvert);
+		new StaticFieldExporter(module).export(classesToConvert);
 
 		module.write(out);
 

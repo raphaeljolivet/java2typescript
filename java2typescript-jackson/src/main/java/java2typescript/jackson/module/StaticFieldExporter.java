@@ -34,8 +34,20 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 
 public class StaticFieldExporter {
 	private static final String CLASS_NAME_EXTENSION = "Static";
+	
+	private final Module module;
 
-	public static void export(Module module, List<Class<?>> classesToConvert)
+	public StaticFieldExporter(Module module) {
+		this.module = module;
+	}
+
+	/** @deprecated - use constructor and instance method instead */
+	@Deprecated
+	public static void export(Module module, List<Class<?>> classesToConvert) {
+		new StaticFieldExporter(module).export(classesToConvert);
+	}
+
+	public void export(List<Class<?>> classesToConvert)
 			throws IllegalArgumentException {
 		for (Class<?> clazz : classesToConvert) {
 			if (clazz.isEnum()) {
@@ -65,13 +77,13 @@ public class StaticFieldExporter {
 		}
 	}
 
-	private static boolean isPublicStaticFinal(final int modifiers) {
+	private boolean isPublicStaticFinal(final int modifiers) {
 		return java.lang.reflect.Modifier.isPublic(modifiers)
 				&& java.lang.reflect.Modifier.isStatic(modifiers)
 				&& java.lang.reflect.Modifier.isFinal(modifiers);
 	}
 
-	private static Value constructValue(Module module, Class<?> type, Object rawValue)
+	private Value constructValue(Module module, Class<?> type, Object rawValue)
 			throws IllegalArgumentException, IllegalAccessException {
 		if (type == boolean.class) {
 			return new Value(BooleanType.getInstance(), rawValue);
@@ -124,7 +136,7 @@ public class StaticFieldExporter {
 		return null;
 	}
 
-	private static AbstractType typeScriptTypeFromJavaType(Module module, Class<?> type) {
+	private AbstractType typeScriptTypeFromJavaType(Module module, Class<?> type) {
 		if (type == boolean.class) {
 			return BooleanType.getInstance();
 		} else if (type == int.class) {
