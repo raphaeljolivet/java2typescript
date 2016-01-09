@@ -34,8 +34,25 @@ import com.fasterxml.jackson.databind.type.SimpleType;
 
 public class StaticFieldExporter {
 	private static final String CLASS_NAME_EXTENSION = "Static";
+	
+	private final Module module;
+	private final TSJsonFormatVisitorWrapper tsJsonFormatVisitorWrapper;
 
-	public static void export(Module module, List<Class<?>> classesToConvert)
+	public StaticFieldExporter(Module module, Configuration conf) {
+		this.module = module;
+		if(conf == null) {
+			conf = new Configuration();
+		}
+		tsJsonFormatVisitorWrapper = new TSJsonFormatVisitorWrapper(module, conf);
+	}
+
+	/** @deprecated - use constructor and instance method instead */
+	@Deprecated
+	public static void export(Module module, List<Class<?>> classesToConvert) {
+		new StaticFieldExporter(module, null).export(classesToConvert);
+	}
+
+	public void export(List<Class<?>> classesToConvert)
 			throws IllegalArgumentException {
 		for (Class<?> clazz : classesToConvert) {
 			if (clazz.isEnum()) {
@@ -65,13 +82,13 @@ public class StaticFieldExporter {
 		}
 	}
 
-	private static boolean isPublicStaticFinal(final int modifiers) {
+	private boolean isPublicStaticFinal(final int modifiers) {
 		return java.lang.reflect.Modifier.isPublic(modifiers)
 				&& java.lang.reflect.Modifier.isStatic(modifiers)
 				&& java.lang.reflect.Modifier.isFinal(modifiers);
 	}
 
-	private static Value constructValue(Module module, Class<?> type, Object rawValue)
+	private Value constructValue(Module module, Class<?> type, Object rawValue)
 			throws IllegalArgumentException, IllegalAccessException {
 		if (type == boolean.class) {
 			return new Value(BooleanType.getInstance(), rawValue);
@@ -82,7 +99,7 @@ public class StaticFieldExporter {
 		} else if (type == String.class) {
 			return new Value(StringType.getInstance(), "'" + (String) rawValue + "'");
 		} else if (type.isEnum()) {
-			final EnumType enumType = TSJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module,
+			final EnumType enumType = tsJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module,
 					SimpleType.construct(type));
 			return new Value(enumType, enumType.getName() + "." + rawValue);
 		} else if (type.isArray()) {
@@ -124,7 +141,7 @@ public class StaticFieldExporter {
 		return null;
 	}
 
-	private static AbstractType typeScriptTypeFromJavaType(Module module, Class<?> type) {
+	private AbstractType typeScriptTypeFromJavaType(Module module, Class<?> type) {
 		if (type == boolean.class) {
 			return BooleanType.getInstance();
 		} else if (type == int.class) {
@@ -134,7 +151,7 @@ public class StaticFieldExporter {
 		} else if (type == String.class) {
 			return StringType.getInstance();
 		} else if (type.isEnum()) {
-			return TSJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module, SimpleType
+			return tsJsonFormatVisitorWrapper.parseEnumOrGetFromCache(module, SimpleType
 					.construct(type));
 		} else if (type.isArray()) {
 			return new ArrayType(AnyType.getInstance());

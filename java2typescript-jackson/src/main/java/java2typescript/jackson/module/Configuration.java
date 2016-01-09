@@ -8,12 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java2typescript.jackson.module.conf.typename.SimpleJacksonTSTypeNamingStrategy;
+import java2typescript.jackson.module.conf.typename.TSTypeNamingStrategy;
 import java2typescript.jackson.module.grammar.ArrayType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
 public class Configuration {
 	private Map<String, AbstractType> customTypes = Collections.emptyMap();
 	private List<String> ignoredMethodNames = new ArrayList<String>();
+	private TSTypeNamingStrategy namingStrategy = new SimpleJacksonTSTypeNamingStrategy();
 
 	public Map<String, AbstractType> getCustomTypes() {
 		return customTypes;
@@ -51,4 +54,11 @@ public class Configuration {
 		return ignoredMethodNames.contains(name);
 	}
 
+	public TSTypeNamingStrategy getNamingStrategy() {
+		return namingStrategy;
+	}
+
+	public void setNamingStrategy(TSTypeNamingStrategy namingStrategy) {
+		this.namingStrategy = namingStrategy;
+	}
 }

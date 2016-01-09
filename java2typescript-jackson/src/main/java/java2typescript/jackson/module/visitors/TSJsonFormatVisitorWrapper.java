@@ -69,13 +69,8 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 	}
 
 	/** Either Java simple name or @JsonTypeName annotation */
-	public static String getName(JavaType type) {
-		JsonTypeName typeName = type.getRawClass().getAnnotation(JsonTypeName.class);
-		if (typeName != null) {
-			return typeName.value();
-		} else {
-			return type.getRawClass().getSimpleName();
-		}
+	public String getName(JavaType type) {
+		return conf.getNamingStrategy().getName(type);
 	}
 
 	private TSJsonObjectFormatVisitor useNamedClassOrParse(JavaType javaType) {
@@ -97,7 +92,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 		}
 	}
 
-	public static EnumType parseEnumOrGetFromCache(Module module, JavaType javaType) {
+	public EnumType parseEnumOrGetFromCache(Module module, JavaType javaType) {
 		String name = getName(javaType);
 		AbstractType namedType = module.getNamedTypes().get(name);
 		if (namedType == null) {
