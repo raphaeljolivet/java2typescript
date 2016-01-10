@@ -2,6 +2,38 @@
 [![Build Status](https://travis-ci.org/raphaeljolivet/java2typescript.svg)](https://travis-ci.org/raphaeljolivet/java2typescript/)
 
 
+### Installation
+To install the library using Maven add [JitPack](https://jitpack.io/) repository and java2typescript dependency:
+
+```xml
+...
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+...
+<dependencies>
+    <dependency>
+        <groupId>com.github.raphaeljolivet.java2typescript</groupId>
+        <artifactId>java2typescript-maven-plugin</artifactId>
+        <version>master-SNAPSHOT</version>
+    </dependency>
+</dependencies>
+...
+```
+
+> Note, artifacts for this project are built automatically based on github repository by [JitPack](https://jitpack.io/docs/#how-to)
+
+> Note, if You are only interested in generating TypeScript definitions from Java classes, You can use `java2typescript-jackson` instead of `java2typescript-maven-plugin` as the artifact id.
+
+> Note, version can be replaced with
+* either any [git tag of this project](tags)
+* or any [git commit hash](commits/master)
+* or with `master-SNAPSHOT` - to indicate the latest commit of master branch (NB! Dependency managers, such as Maven cache SNAPSHOTs by default, see [JitPack documentation](https://jitpack.io/docs/#snapshots))
+
+
 ## Purpose
 
 **Java2Typescript** provides a bridge between a **Java** REST service definition and a **Typescript** client. 
