@@ -134,7 +134,7 @@ To install the library using Maven add [JitPack](https://jitpack.io/) repository
 > Note, if You are only interested in generating TypeScript definitions from Java classes, You can use `java2typescript-jackson` instead of `java2typescript-maven-plugin` as the artifact id.
 
 > Note, version can be replaced with
-* either any released version ([![Release](https://img.shields.io/github/release/raphaeljolivet/java2typescript.svg?label=latest release is)](https://jitpack.io/#raphaeljolivet/java2typescript))
+* either any [released version of this project](../../releases) ([![Release](https://img.shields.io/github/release/raphaeljolivet/java2typescript.svg?label=latest release is)](https://jitpack.io/#raphaeljolivet/java2typescript))
 * or any [git tag of this project](../../tags)
 * or any [git commit hash](../../commits/master)
 * or with `master-SNAPSHOT` - to indicate the latest commit of master branch (NB! Dependency managers, such as Maven cache SNAPSHOTs by default, see [JitPack documentation](https://jitpack.io/docs/#snapshots))
