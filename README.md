@@ -1,37 +1,6 @@
-## Continuous Integration
-[![Build Status](https://travis-ci.org/raphaeljolivet/java2typescript.svg)](https://travis-ci.org/raphaeljolivet/java2typescript/)
+[![Release](https://img.shields.io/github/release/raphaeljolivet/java2typescript.svg?label=latest release is)](https://jitpack.io/#raphaeljolivet/java2typescript)
 
-
-### Installation
-To install the library using Maven add [JitPack](https://jitpack.io/) repository and java2typescript dependency:
-
-```xml
-...
-<repositories>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
-</repositories>
-...
-<dependencies>
-    <dependency>
-        <groupId>com.github.raphaeljolivet.java2typescript</groupId>
-        <artifactId>java2typescript-maven-plugin</artifactId>
-        <version>master-SNAPSHOT</version>
-    </dependency>
-</dependencies>
-...
-```
-
-> Note, artifacts for this project are built automatically based on github repository by [JitPack](https://jitpack.io/docs/#how-to)
-
-> Note, if You are only interested in generating TypeScript definitions from Java classes, You can use `java2typescript-jackson` instead of `java2typescript-maven-plugin` as the artifact id.
-
-> Note, version can be replaced with
-* either any [git tag of this project](tags)
-* or any [git commit hash](commits/master)
-* or with `master-SNAPSHOT` - to indicate the latest commit of master branch (NB! Dependency managers, such as Maven cache SNAPSHOTs by default, see [JitPack documentation](https://jitpack.io/docs/#snapshots))
+Continuous Integration [![Build Status](https://travis-ci.org/raphaeljolivet/java2typescript.svg)](https://travis-ci.org/raphaeljolivet/java2typescript/) (for last commit on any branch)
 
 
 ## Purpose
@@ -135,6 +104,40 @@ var onePerson : Person = prs.getPeople("rrr@eee.com");
 ```
  
 Don't forget to import the generated file **People.js** in the final HTML page.
+
+
+### Installation
+
+To install the library using Maven add [JitPack](https://jitpack.io/) repository and java2typescript dependency:
+
+```xml
+...
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
+...
+<dependencies>
+    <dependency>
+        <groupId>com.github.raphaeljolivet.java2typescript</groupId>
+        <artifactId>java2typescript-maven-plugin</artifactId>
+        <version>v0.3.0.rc1</version><!-- see notes bellow to get either snapshot or specific commit or tag or other version -->
+    </dependency>
+</dependencies>
+...
+```
+
+> Note, artifacts for this project are built automatically by [JitPack](https://jitpack.io/docs/#how-to) based on github repository.
+
+> Note, if You are only interested in generating TypeScript definitions from Java classes, You can use `java2typescript-jackson` instead of `java2typescript-maven-plugin` as the artifact id.
+
+> Note, version can be replaced with
+* either any released version ([![Release](https://img.shields.io/github/release/raphaeljolivet/java2typescript.svg?label=latest release is)](https://jitpack.io/#raphaeljolivet/java2typescript))
+* or any [git tag of this project](tags)
+* or any [git commit hash](commits/master)
+* or with `master-SNAPSHOT` - to indicate the latest commit of master branch (NB! Dependency managers, such as Maven cache SNAPSHOTs by default, see [JitPack documentation](https://jitpack.io/docs/#snapshots))
 
 
 # Licence
