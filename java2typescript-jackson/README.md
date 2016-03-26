@@ -40,8 +40,19 @@ mWriter.preferences.useEnumPattern();
 There are scenarios when You might want to use different TypeScript type instead of specific Java Type. There are several options for doing this depending how You want it to be done:
 
 ##### Renaming Type and emitting it to the output
+Logic, that determines the name of TypeScript type based on Java class is implemented using [TSTypeNamingStrategy](src/main/java/java2typescript/jackson/module/conf/typename/TSTypeNamingStrategy.java) interface. Currently there are two implementations provided out of the box by this library:
+1. [SimpleJacksonTSTypeNamingStrategy](src/main/java/java2typescript/jackson/module/conf/typename/SimpleJacksonTSTypeNamingStrategy.java) - The default, uses Java class name for TypeScript type, unless class has annotation, that specifies custom name (see bellow).
+1. [WithEnclosingClassTSTypeNamingStrategy](jackson/module/conf/typename/WithEnclosingClassTSTypeNamingStrategy.java) - extends SimpleJacksonTSTypeNamingStrategy to include enclosing class name as a prefix (`javaClass.getName()` without package ).
+
+###### Renaming Type using annotation on the Java class (SimpleJacksonTSTypeNamingStrategy)
 You can use `@com.fasterxml.jackson.annotation.JsonTypeName("ChangedEnumName")` annotation on the Java type to use different name in TypeScript output (interface/enum with different name is also generated to the output).
-https://github.com/raphaeljolivet/java2typescript/blob/master/java2typescript-jackson/src/test/java/java2typescript/jackson/module/DefinitionGeneratorTest.java#L37
+See the [example from the test](src/test/java/java2typescript/jackson/module/DefinitionGeneratorTest.java#L37).
+
+###### Renaming Types using custom (re)naming strategy
+To tweak naming TypeScript types for Your specific needs, You can provide an implementation of [TSTypeNamingStrategy](src/main/java/java2typescript/jackson/module/conf/typename/TSTypeNamingStrategy.java), such as [SimpleJacksonTSTypeNamingStrategy](src/main/java/java2typescript/jackson/module/conf/typename/SimpleJacksonTSTypeNamingStrategy.java) (or write Your own) to [Configuration.setNamingStrategy(namingStrategy)](src/main/java/java2typescript/jackson/module/Configuration.java#L61).
+
+See the test [TypeRenamingWithEnclosingClassTest](src/test/java/java2typescript/jackson/module/TypeRenamingWithEnclosingClassTest.java#L34) and the [expected output of the test](src/test/resources/java2typescript/jackson/module/TypeRenamingWithEnclosingClassTest.twoClassesWithSameName.d.ts#L1).
+
 
 ##### Using different type, not emitting it to the output
 One common use-case, could be for instance Joda or Java8 LocalDate or Date or Calendar to TypeScript/JavaScript Date.
