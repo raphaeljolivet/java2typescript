@@ -29,7 +29,7 @@ public class EnumTypeToEnumPatternWriter implements CustomAbstractTypeWriter {
 		for (String value : enumType.getValues()) {
 			writer.write(String.format(preferences.getIndentation() + "static %s = new %s('%s');\n", value, enumTypeName, value));
 		}
-		writer.write(preferences.getIndentation() + "constructor(name:string){super(name)}\n");
+		writer.write(preferences.getIndentation() + "constructor(name:string){super(name);}\n");
 		preferences.decreaseIndention();
 		writer.write(preferences.getIndentation() + "}");
 	}
