@@ -33,9 +33,13 @@ public class WriterPreferencesTest {
 	}
 	
 	static class Constants {
+		// constants in non-alfabetic order
+		public static final String MY_CONSTANT_STRING = "stringValue";
 		public static final boolean MY_CONSTANT_BOOLEAN = true;
 	}
 	
+	enum E{B,C,A}
+
 
 	@Test
 	public void enumToEnumPattern() throws IOException {
@@ -94,5 +98,47 @@ public class WriterPreferencesTest {
 
 		// Assert
 		ExpectedOutputChecker.checkOutputFromFile(out);
+	}
+
+	@Test
+	public void sortOutputTypesAndVars() throws IOException {
+		// Arrange
+		ExternalModuleFormatWriter writer = new ExternalModuleFormatWriter();
+		Configuration conf = null; // default conf
+		writer.preferences.sort();
+
+		@SuppressWarnings("unused")
+		class F{
+			public String B;
+			public String C;
+			public String A;
+			public void b() {};
+			public void c() {};
+			public void a() {};
+		}
+		class Z{}
+		class A{}
+		class D{}
+
+		Class<?>[] classes = new Class[]{TestClass.class, D.class, Z.class, A.class, E.class, F.class};
+
+		Module module = TestUtil.createTestModule(conf, classes);
+
+		List<Class<?>> toConvert = new ArrayList<Class<?>>();
+		toConvert.add(Constants.class);
+
+		module.getVars().put("z", module.getNamedTypes().get(Z.class.getSimpleName()));
+		module.getVars().put("a", module.getNamedTypes().get(A.class.getSimpleName()));
+
+		new StaticFieldExporter(module, conf).export(toConvert);
+		Writer out = new StringWriter();
+
+		// Act
+		writer.write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		ExpectedOutputChecker.checkOutputFromFileEquals(out);
 	}
 }

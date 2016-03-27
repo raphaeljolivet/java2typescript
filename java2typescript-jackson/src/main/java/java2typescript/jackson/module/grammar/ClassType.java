@@ -19,11 +19,18 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
+import java2typescript.jackson.module.writer.SortUtil;
 import java2typescript.jackson.module.writer.WriterPreferences;
 
 public class ClassType extends AbstractNamedType {
@@ -47,12 +54,18 @@ public class ClassType extends AbstractNamedType {
 	public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("interface %s {\n", name));
 		preferences.increaseIndentation();
-		for (Entry<String, AbstractType> entry : fields.entrySet()) {
+		Collection<Entry<String, AbstractType>> fieldsEntrySet = fields.entrySet();
+		Collection<String> methodsKeySet = methods.keySet();
+		if(preferences.isSort()) {
+			fieldsEntrySet = SortUtil.sortEntriesByKey(fieldsEntrySet);
+			methodsKeySet = SortUtil.sort(methodsKeySet);
+		}
+		for (Entry<String, AbstractType> entry : fieldsEntrySet) {
 			writer.write(format("%s%s: ", preferences.getIndentation(), entry.getKey()));
 			entry.getValue().write(writer);
 			writer.write(";\n");
 		}
-		for (String methodName : methods.keySet()) {
+		for (String methodName : methodsKeySet) {
 			writer.write(preferences.getIndentation() + methodName);
 			this.methods.get(methodName).writeNonLambda(writer);
 			writer.write(";\n");

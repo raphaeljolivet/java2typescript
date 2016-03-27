@@ -2,6 +2,7 @@ package java2typescript.jackson.module.writer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import java2typescript.jackson.module.grammar.EnumType;
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
@@ -26,7 +27,11 @@ public class EnumTypeToEnumPatternWriter implements CustomAbstractTypeWriter {
 		String enumTypeName = enumType.getName();
 		writer.write(String.format("class %s extends EnumPatternBase {\n", enumTypeName));
 		preferences.increaseIndentation();
-		for (String value : enumType.getValues()) {
+		List<String> enumConstants = enumType.getValues();
+		if(preferences.isSort()) {
+			enumConstants = SortUtil.sort(enumConstants);
+		}
+		for (String value : enumConstants) {
 			writer.write(String.format(preferences.getIndentation() + "static %s = new %s('%s');\n", value, enumTypeName, value));
 		}
 		writer.write(preferences.getIndentation() + "constructor(name:string){super(name);}\n");
