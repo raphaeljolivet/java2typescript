@@ -28,13 +28,23 @@ public class ExternalModuleFormatWriter implements ModuleWriter {
 
 		writeEnumPatternBaseClassIfNeeded(namedTypes, writer);
 
+		if (preferences.isSort()) {
+			namedTypes = SortUtil.sortByTypeName(namedTypes);
+		}
 		for (AbstractNamedType type : namedTypes) {
 			writer.write(preferences.getIndentation() + "export ");
 			type.writeDef(writer, preferences);
 			writer.write("\n\n");
 		}
 
-		for (Entry<String, AbstractType> entry : module.getVars().entrySet()) {
+		if (preferences.isSort()) {
+			namedTypes = SortUtil.sortByTypeName(namedTypes);
+		}
+		Collection<Entry<String, AbstractType>> entrySet = module.getVars().entrySet();
+		if (preferences.isSort()) {
+			entrySet = SortUtil.sortEntriesByKey(entrySet);
+		}
+		for (Entry<String, AbstractType> entry : entrySet) {
 			writer.write(preferences.getIndentation() + "export var " + entry.getKey() + ": ");
 			entry.getValue().write(writer);
 			writer.write(";\n");

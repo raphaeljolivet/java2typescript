@@ -19,12 +19,14 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.grammar.base.Value;
+import java2typescript.jackson.module.writer.SortUtil;
 import java2typescript.jackson.module.writer.WriterPreferences;
 
 public class StaticClassType extends AbstractNamedType {
@@ -39,7 +41,11 @@ public class StaticClassType extends AbstractNamedType {
 	public void writeDefInternal(Writer writer, WriterPreferences prefs) throws IOException {
 		writer.write(format("class %s {\n", name));
 		prefs.increaseIndentation();
-		for (Entry<String, Value> entry : fields.entrySet()) {
+		Collection<Entry<String, Value>> fieldsEntrySet = fields.entrySet();
+		if(prefs.isSort()) {
+			fieldsEntrySet = SortUtil.sortEntriesByKey(fieldsEntrySet);
+		}
+		for (Entry<String, Value> entry : fieldsEntrySet) {
 			writer.write(format("%sstatic %s: ", prefs.getIndentation(), entry.getKey()));
 			entry.getValue().getType().write(writer);
 			writer.write(" = ");

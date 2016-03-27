@@ -14,6 +14,7 @@ export module modName {
 
 	export class ConstantsStatic {
 		static MY_CONSTANT_BOOLEAN: boolean = true;
+		static MY_CONSTANT_STRING: string = 'stringValue';
 	}
 
 	export interface TestClass {

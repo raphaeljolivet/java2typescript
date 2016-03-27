@@ -15,13 +15,19 @@ import com.google.common.io.Resources;
 public class ExpectedOutputChecker {
 
 	public static void checkOutputFromFile(Writer out) {
-		compareFileContent(out);
+		compareFileContent(out, getCaller());
 	}
 
-	private static void compareFileContent(Writer out) {
+	public static void checkOutputFromFileEquals(Writer out) {
+		Assert.assertEquals(getExpectedOutput(getCaller()), out.toString());
+	}
+	private static StackTraceElement getCaller() {
+		return new Throwable().getStackTrace()[2];
+	}
+	private static void compareFileContent(Writer out, StackTraceElement testMethodStackTraceElem) {
 		// Can't rely on specific order of classes/fields/methods, so file content equality can't be used.
 		// Using naive approach to check that actual output contains exactly the same lines as expected output
-		Assert.assertEquals(getLinesAlphabetically(getExpectedOutput()), getLinesAlphabetically(out.toString()));
+		Assert.assertEquals(getLinesAlphabetically(getExpectedOutput(testMethodStackTraceElem)), getLinesAlphabetically(out.toString()));
 	}
 
 	private static List<String> getLinesAlphabetically(String s) {
@@ -30,8 +36,7 @@ public class ExpectedOutputChecker {
 		return lines;
 	}
 
-	private static String getExpectedOutput() {
-		StackTraceElement testMethodStackTraceElem = new Throwable().getStackTrace()[3];
+	private static String getExpectedOutput(StackTraceElement testMethodStackTraceElem) {
 		String testMethodName = testMethodStackTraceElem.getMethodName();
 		String className = testMethodStackTraceElem.getClassName();
 		return getFileContent(className.replace('.', '/') + "." + testMethodName + ".d.ts");

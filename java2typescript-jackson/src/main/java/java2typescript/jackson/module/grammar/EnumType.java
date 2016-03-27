@@ -20,6 +20,7 @@ import static java.lang.String.format;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 import java2typescript.jackson.module.writer.WriterPreferences;
@@ -37,6 +38,9 @@ public class EnumType extends AbstractNamedType {
 	public void writeDefInternal(Writer writer, WriterPreferences preferences) throws IOException {
 		writer.write(format("enum %s {\n", name));
 		preferences.increaseIndentation();
+		if(preferences.isSort()) {
+			Collections.sort(values);
+		}
 		for (String value : values) {
 			writer.write(format("%s%s,\n", preferences.getIndentation(), value));
 		}

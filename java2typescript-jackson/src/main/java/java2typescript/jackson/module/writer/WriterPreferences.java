@@ -13,6 +13,8 @@ public class WriterPreferences {
 
 	private List<CustomAbstractTypeWriter> customWriters = new ArrayList<CustomAbstractTypeWriter>();
 	private boolean useEnumPattern;
+	/** sort types and vars in output */
+	private boolean sort;
 	
 	public void useEnumPattern() {
 		addWriter(new EnumTypeToEnumPatternWriter());
@@ -21,6 +23,14 @@ public class WriterPreferences {
 
 	public boolean isUseEnumPattern() {
 		return useEnumPattern;
+	}
+	
+	public void sort() {
+		sort = true;
+	}
+	
+	public boolean isSort() {
+		return sort;
 	}
 
 	public void addWriter(CustomAbstractTypeWriter writer) {
