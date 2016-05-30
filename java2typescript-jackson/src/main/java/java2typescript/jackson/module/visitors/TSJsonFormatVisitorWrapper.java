@@ -98,7 +98,7 @@ public class TSJsonFormatVisitorWrapper extends ABaseTSJsonFormatVisitor impleme
 		if (namedType == null) {
 			EnumType enumType = new EnumType(name);
 			for (Object val : javaType.getRawClass().getEnumConstants()) {
-				enumType.getValues().add(val.toString());
+				enumType.getValues().add(((Enum<?>)val).name());
 			}
 			module.getNamedTypes().put(name, enumType);
 			return enumType;
