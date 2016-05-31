@@ -186,6 +186,7 @@ public class ServiceDescriptorGenerator {
 		// Replace template values
 		String out = jsTemplate.replace(MODULE_NAME_PLACEHOLDER, moduleName);
 		out = out.replace(JSON_PLACEHOLDER, jsonOut.toString());
+		writer.write(out);
 	}
 
 	private RestMethod generateMethod(Method method) {
