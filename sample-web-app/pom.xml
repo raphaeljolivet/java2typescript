@@ -97,9 +97,9 @@
                 </configuration>
             </plugin>	
             <plugin>
-                <groupId>java2typescript</groupId>
+                <groupId>com.github.raphaeljolivet.java2typescript</groupId>
                 <artifactId>java2typescript-maven-plugin</artifactId>
-                <version>0.3-SNAPSHOT</version>
+                <version>v0.3.0.rc2</version>
                 <configuration>
                     <serviceClass>com.example.rs.PeopleRestService</serviceClass>
                     <moduleName>People</moduleName>
@@ -127,4 +127,18 @@
           	<layout>default</layout>
         </repository>
 	</repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jitpack.io2</id>
+            <name>jitpack.io Plugin Repository</name>
+            <url>https://jitpack.io</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
