@@ -7,14 +7,18 @@
     <version>0.3-SNAPSHOT</version>
   </parent>
 
-
+  <!-- Maven plugins descriptor needs to contain the same group, artifact and version as used by the application pom.xml -->
+  <groupId>com.github.raphaeljolivet.java2typescript</groupId><!-- different compared to parent, as plugin will be distributed through jitpack.io with this group id -->
   <artifactId>java2typescript-maven-plugin</artifactId>
+  <version>v0.3.0.rc2</version><!-- different compared to parent, as plugin will be distributed through jitpack.io with this version -->
+
   <packaging>maven-plugin</packaging>
   <name>java2typescript maven plugin</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <maven.version>2.2.1</maven.version>
+    <java2typescript.version>0.3-SNAPSHOT</java2typescript.version>
   </properties>
 
   <build>
@@ -113,7 +117,7 @@
     <dependency>
       <groupId>java2typescript</groupId>
       <artifactId>java2typescript-jaxrs</artifactId>
-      <version>${project.version}</version>
+      <version>${java2typescript.version}</version>
     </dependency>
   </dependencies>
 
