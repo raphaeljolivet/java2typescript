@@ -123,7 +123,7 @@ To install the library using Maven add [JitPack](https://jitpack.io/) repository
     <dependency>
         <groupId>com.github.raphaeljolivet.java2typescript</groupId>
         <artifactId>java2typescript-maven-plugin</artifactId>
-        <version>v0.3.0.rc2</version><!-- see notes bellow to get either snapshot or specific commit or tag or other version -->
+        <version>v0.3.0.rc3-SNAPSHOT</version><!-- see notes bellow to get either snapshot or specific commit or tag or other version -->
     </dependency>
 </dependencies>
 ...
