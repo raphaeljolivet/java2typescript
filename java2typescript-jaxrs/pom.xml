@@ -8,16 +8,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>java2typescript</groupId>
+		<groupId>com.github.raphaeljolivet.java2typescript</groupId>
 		<artifactId>java2typescript</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>v0.3.0.rc3-SNAPSHOT</version>
 	</parent>
 
-	<groupId>java2typescript</groupId>
 	<artifactId>java2typescript-jaxrs</artifactId>
 	<name>java2typescript jaxrs</name>
-	<version>0.3-SNAPSHOT</version>
-	
+
 	<description>A module to generate JSON descriptor and Typescript definition out of a REST Service, out of JAX-RS annotations</description>
 	<dependencies>
 		<dependency>
@@ -36,13 +34,12 @@
 			<version>15.0</version>
 		</dependency>
 		<dependency>
-			<groupId>java2typescript</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>java2typescript-jackson</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
 		<dependency>
-			<groupId>java2typescript</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>sample-web-app-server</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>

@@ -2,23 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>java2typescript</groupId>
+    <groupId>com.github.raphaeljolivet.java2typescript</groupId>
     <artifactId>java2typescript</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>v0.3.0.rc3-SNAPSHOT</version>
   </parent>
 
-  <!-- Maven plugins descriptor needs to contain the same group, artifact and version as used by the application pom.xml -->
-  <groupId>com.github.raphaeljolivet.java2typescript</groupId><!-- different compared to parent, as plugin will be distributed through jitpack.io with this group id -->
   <artifactId>java2typescript-maven-plugin</artifactId>
-  <version>v0.3.0.rc2</version><!-- different compared to parent, as plugin will be distributed through jitpack.io with this version -->
-
   <packaging>maven-plugin</packaging>
   <name>java2typescript maven plugin</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <maven.version>2.2.1</maven.version>
-    <java2typescript.version>0.3-SNAPSHOT</java2typescript.version>
   </properties>
 
   <build>
@@ -38,8 +33,8 @@
     </plugins>
     <pluginManagement>
       <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build 
-          itself. -->
+        <!--This plugin's configuration is used to store Eclipse m2e settings only.
+        It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -115,9 +110,9 @@
       <version>1.3.8</version>
     </dependency>
     <dependency>
-      <groupId>java2typescript</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>java2typescript-jaxrs</artifactId>
-      <version>${java2typescript.version}</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 
