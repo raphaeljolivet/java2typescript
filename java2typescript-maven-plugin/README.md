@@ -30,9 +30,42 @@ By default the two files will be generated as :
 
 To use this plugin, you first need to declare a custom repository :
 
-**IN PROGRESS**
+```xml
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jitpack.io2</id>
+            <name>jitpack.io Plugin Repository</name>
+            <url>https://jitpack.io</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+```
 
-and bind the **generate** goal to some phase.
+and add the plugin:
+```xml
+	<build>
+		<plugins>
+            <plugin>
+                <groupId>com.github.raphaeljolivet.java2typescript</groupId>
+                <artifactId>java2typescript-maven-plugin</artifactId>
+                <version>FIXME-change-the-version</version>
+                <configuration>
+                    <!-- FIXME see the configuration parameters above -->
+                    <serviceClass>com.example.rs.PeopleRestService</serviceClass>
+                    <moduleName>People</moduleName>
+                </configuration>
+			</plugin>
+		</plugins>
+	</build>
+```
+
+> Note, that You should change the configuration properties (see above) and plugin version (take a look at [installation instruction](../../../#installation)s from parent project)
 
 
 
