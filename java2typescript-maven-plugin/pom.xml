@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.github.raphaeljolivet.java2typescript</groupId>
     <artifactId>java2typescript</artifactId>
-    <version>v0.3.0.rc3-SNAPSHOT</version>
+    <version>v0.3.0</version>
   </parent>
 
   <artifactId>java2typescript-maven-plugin</artifactId>
