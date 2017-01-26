@@ -7,14 +7,14 @@ Continuous Integration [![Build Status](https://travis-ci.org/raphaeljolivet/jav
 
 **Java2Typescript** provides a bridge between a **Java** REST service definition and a **Typescript** client. 
 
-It enables to expose the full DTO model and REST services API as a clean typescript definition file, thus enabling strong type checking on the model of your application.
+It enables you to expose a full DTO model and REST services API as a clean typescript definition file, thus enabling strong type-checking on the models of your application.
 
 This project is composed of 3 modules :
-* **[java2typescript-jackson](java2typescript-jackson)**: A [Jackson](http://jackson.codehaus.org/) module that generate **typescript** definition files for Java classes, using a Jackson ObjectMapper.
+* **[java2typescript-jackson](java2typescript-jackson)**: A [Jackson](http://jackson.codehaus.org/) module that generates **typescript** definition files for Java classes, using a Jackson ObjectMapper.
 * **[java2typescript-jaxrs](java2typescript-jaxrs)**: An extension to **java2typescript-jackson** that takes a [JAX-RS](https://jax-rs-spec.java.net/) annotated java class and produces both :
  * A Typescript definition file of the service (`.d.ts`), together with description of all needed DTO objects. 
- * An implementation `.js `of the above definition as REST client stub. 
-* **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of `.d.ts` and `.js` implementation of REST services.
+ * An `.js` implementation of the above definition as a REST client stub. 
+* **[java2typescript-maven-plugin](java2typescript-maven-plugin)**: A maven plugin to automate the generation of a `.d.ts` file and a `.js` implementation of REST services.
 * A **[sample web application](sample-web-app)** that demonstrate the usage of **java2typescript**
 
 ## Big picture
@@ -45,20 +45,20 @@ Consider the following JAX-RS service
 ```java
 @Path( "/people" ) 
 public interface PeopleRestService {
-	
-	
-	@Produces( { MediaType.APPLICATION_JSON } )
-	@GET
-	public Collection< Person > getPeoples( @QueryParam( "page") @DefaultValue( "1" ) final int page ) {
-		return peopleService.getPeople( page, 5 );
-	}
+  
+  
+  @Produces( { MediaType.APPLICATION_JSON } )
+  @GET
+  public Collection< Person > getPeoples( @QueryParam( "page") @DefaultValue( "1" ) final int page ) {
+    return peopleService.getPeople( page, 5 );
+  }
 
-	@Produces( { MediaType.APPLICATION_JSON } )
-	@Path( "/{email}" )
-	@GET
-	public Person getPeople( @PathParam( "email" ) final String email ) {
-		return peopleService.getByEmail( email );
-	}
+  @Produces( { MediaType.APPLICATION_JSON } )
+  @Path( "/{email}" )
+  @GET
+  public Person getPeople( @PathParam( "email" ) final String email ) {
+    return peopleService.getByEmail( email );
+  }
 }
 ```
 
@@ -84,12 +84,12 @@ export var adapter: (httpMethod: string, path: string, getParams: Object, postPa
 }
 ```
 
-The module **People** contains both the definition of the DTO **Person** and the service **PeopleRestService**, it also provides 3 properties :
+The module **People** contains both the definitions of the DTO **Person** and the service **PeopleRestService**. It also provides 3 properties :
 * **rootURL** : URL of the service : Should be set before usage
 * **peopleRESTService** : An instance of the service
-* **adapter** : An adapter for RESt service call. Set to Jquery adapter by default.
+* **adapter** : An adapter for REST service call. Set to Jquery adapter by default.
 
-Then, in your application, you can call the service like so 
+Then, in your application, you can call the service like so:
 ```typescript
 /// <reference path="People.d.ts" />
 import p = People;
@@ -108,15 +108,15 @@ Don't forget to import the generated file **People.js** in the final HTML page.
 
 ### Installation
 
-To install the library using Maven add [JitPack](https://jitpack.io/) repository and java2typescript dependency:
+To install the library using Maven, add the [JitPack](https://jitpack.io/) repository and java2typescript dependency:
 
 ```xml
 ...
 <repositories>
-	<repository>
-	    <id>jitpack.io</id>
-	    <url>https://jitpack.io</url>
-	</repository>
+  <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+  </repository>
 </repositories>
 ...
 <dependencies>
@@ -129,7 +129,7 @@ To install the library using Maven add [JitPack](https://jitpack.io/) repository
 ...
 ```
 
-> Note, artifacts for this project are built automatically by [JitPack](https://jitpack.io/docs/#how-to) based on github repository.
+> Note, artifacts for this project are built automatically by [JitPack](https://jitpack.io/docs/#how-to) based on the github repository.
 
 > Note, if You are only interested in generating TypeScript definitions from Java classes, You can use `java2typescript-jackson` instead of `java2typescript-maven-plugin` as the artifact id.
 
