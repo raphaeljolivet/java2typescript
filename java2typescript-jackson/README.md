@@ -28,11 +28,49 @@ See the [tests for excluded methods](src/test/java/java2typescript/jackson/modul
 ### Enums
 Java enums are converted to TypeScript enums by default,
 but TypeSafe enum pattern can be used to force the generation of classes instead of enums (see [the description of the issue](https://github.com/raphaeljolivet/java2typescript/issues/13).
-See [this output](src/test/resources/java2typescript/jackson/module/WriterPreferencesTest.enumToEnumPattern.d.ts) from the [test that turns on this preference](src/test/java/java2typescript/jackson/module/WriterPreferencesTest.java#L44) using
+See [this output](src/test/resources/java2typescript/jackson/module/WriterPreferencesTest.enumToEnumPattern.d.ts) from the [test that turns on this preference](src/test/java/java2typescript/jackson/module/WriterPreferencesTest.java#L49) using
 
 ```Java
 mWriter.preferences.useEnumPattern();
 ```
+
+Another option available is to write enums as [String Literal Types](https://www.typescriptlang.org/docs/handbook/advanced-types.html#string-literal-types).
+The advantage here is that the generated typescript definitions can be used with JSON that has the string value of the corresponding java enum value, while still maintaining
+strong-typing. For example, take this java DTO class:
+
+```java
+class MyDto {
+    static enum MyEnum {
+        VAL1, VAl2, VAL3
+    }
+    public MyEnum myKey;
+}
+
+```
+
+A java web server which is converting an instance of `MyDto` to JSON will likely return something like this:
+
+```json
+{
+  "myKey": "VAL1"
+}
+```
+
+The default for this tool is to create Typescript enums, which are integer-based. This will not work without some
+conversion layer in your client code. To mitigate, you can use the `useStringLiteralTypeForEnums` option on the module
+writer. This will generate a Typescript definition like this:
+
+```TypeScript
+export interface MyDto {
+    myKey: MyEnum;
+}
+export type MyEnum = "VAL1" | "VAl2" | "VAL3";
+```
+
+This will keep strong-typing for the values, while allowing for string literal values of enum properties. Take a look at
+the [test that turns on this preference](src/test/java/java2typescript/jackson/module/WriterPreferencesTest.java#L67)
+
+
 
 ### Mapping specific java classes to custom TypeScript types
 There are scenarios when you might want to use a different TypeScript type instead of the default Java Type. There are several options for doing this depending how you want it to be done:

@@ -28,6 +28,10 @@ public class WriterPreferencesTest {
 		VAL1, VAL2
 	}
 
+	static enum EnumOneValue {
+		VAL1
+	}
+
 	static class Dummy {
 		public String _String;
 	}
@@ -48,6 +52,24 @@ public class WriterPreferencesTest {
 		mWriter.preferences.useEnumPattern();
 
 		Module module = TestUtil.createTestModule(null, Enum.class);
+		Writer out = new StringWriter();
+
+		// Act
+		mWriter.write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		ExpectedOutputChecker.checkOutputFromFile(out);
+	}
+
+	@Test
+	public void enumToStringLiteralType() throws IOException {
+		// Arrange
+		ExternalModuleFormatWriter mWriter = new ExternalModuleFormatWriter();
+		mWriter.preferences.useStringLiteralTypeForEnums();
+
+		Module module = TestUtil.createTestModule(null, Enum.class, EnumOneValue.class);
 		Writer out = new StringWriter();
 
 		// Act
