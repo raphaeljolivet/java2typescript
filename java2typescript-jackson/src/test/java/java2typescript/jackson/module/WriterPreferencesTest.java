@@ -25,7 +25,9 @@ public class WriterPreferencesTest {
 	}
 
 	static enum Enum {
-		VAL1, VAL2
+		VAL1,
+		VAL2,
+		name // lowercase "name" is special, can cause issues with JavaScript at runtime
 	}
 
 	static enum EnumOneValue {
