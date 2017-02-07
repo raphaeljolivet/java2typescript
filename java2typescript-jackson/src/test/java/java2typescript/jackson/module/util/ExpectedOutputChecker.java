@@ -31,7 +31,6 @@ public class ExpectedOutputChecker {
 	}
 
 	private static List<String> getLinesAlphabetically(String s) {
-		s = s.replace("\r", "");
 		List<String> lines = Lists.newArrayList(s.split("\\n"));
 		Collections.sort(lines);
 		return lines;
@@ -40,7 +39,9 @@ public class ExpectedOutputChecker {
 	private static String getExpectedOutput(StackTraceElement testMethodStackTraceElem) {
 		String testMethodName = testMethodStackTraceElem.getMethodName();
 		String className = testMethodStackTraceElem.getClassName();
-		return getFileContent(className.replace('.', '/') + "." + testMethodName + ".d.ts");
+		String expectedOutputFromFile = getFileContent(className.replace('.', '/') + "." + testMethodName + ".d.ts");
+		expectedOutputFromFile = expectedOutputFromFile.replace("\r", "");
+		return expectedOutputFromFile;
 	}
 
 	private static String getFileContent(String resourceName) {
