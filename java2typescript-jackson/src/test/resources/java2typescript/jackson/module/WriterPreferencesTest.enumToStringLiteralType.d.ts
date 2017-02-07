@@ -6,7 +6,7 @@ export type Enum =
 export class EnumValues {
     static VAL1: Enum = "VAL1";
     static VAL2: Enum = "VAL2";
-    static name: Enum = "name";
+    static name_: Enum = "name";
 }
 
 export type EnumOneValue =
