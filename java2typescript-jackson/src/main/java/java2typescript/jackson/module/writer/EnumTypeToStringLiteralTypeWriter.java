@@ -1,14 +1,14 @@
 package java2typescript.jackson.module.writer;
 
-import java2typescript.jackson.module.grammar.EnumType;
-import java2typescript.jackson.module.grammar.base.AbstractNamedType;
+import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import static java.lang.String.format;
+import java2typescript.jackson.module.grammar.EnumType;
+import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 
 /**
  * Another alternate way of converting Java enums. This writer will convert enums to what is known as a String Literal
@@ -78,6 +78,8 @@ public class EnumTypeToStringLiteralTypeWriter implements CustomAbstractTypeWrit
 	}
 
 	String getConstantName(String value) {
+		// lowercase "name" is special, can cause issues with JavaScript at runtime
 		return "name".equals(value) ? "name_" : value;
 	}
+
 }

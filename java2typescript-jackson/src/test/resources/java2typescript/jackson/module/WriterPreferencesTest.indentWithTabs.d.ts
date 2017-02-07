@@ -9,7 +9,7 @@ export module modName {
 	export class Enum extends EnumPatternBase {
 		static VAL1 = new Enum('VAL1');
 		static VAL2 = new Enum('VAL2');
-		static name = new Enum('name');
+		static name_ = new Enum('name');
 		constructor(name:string){super(name);}
 	}
 

@@ -32,11 +32,16 @@ public class EnumTypeToEnumPatternWriter implements CustomAbstractTypeWriter {
 			enumConstants = SortUtil.sort(enumConstants);
 		}
 		for (String value : enumConstants) {
-			writer.write(String.format(preferences.getIndentation() + "static %s = new %s('%s');\n", value, enumTypeName, value));
+			writer.write(String.format(preferences.getIndentation() + "static %s = new %s('%s');\n", getConstantName(value), enumTypeName, value));
 		}
 		writer.write(preferences.getIndentation() + "constructor(name:string){super(name);}\n");
 		preferences.decreaseIndention();
 		writer.write(preferences.getIndentation() + "}");
+	}
+
+	String getConstantName(String value) {
+		// lowercase "name" is special, can cause issues with JavaScript at runtime
+		return "name".equals(value) ? "name_" : value;
 	}
 
 }
