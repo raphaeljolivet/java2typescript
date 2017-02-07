@@ -5,7 +5,6 @@ import java2typescript.jackson.module.grammar.base.AbstractNamedType;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,6 +18,8 @@ import static java.lang.String.format;
  * @author Andy Perlitch
  */
 public class EnumTypeToStringLiteralTypeWriter implements CustomAbstractTypeWriter {
+
+	private String enumConstantValuesClassSufix = "Values";
 
 	@Override
 	public boolean accepts(AbstractNamedType type, WriterPreferences preferences) {
@@ -50,5 +51,29 @@ public class EnumTypeToStringLiteralTypeWriter implements CustomAbstractTypeWrit
 			isFirst = false;
 		}
 		preferences.decreaseIndention();
+
+		writeConstants(writer, preferences, enumTypeName, enumConstants);
+	}
+
+	private void writeConstants(
+			Writer writer,
+			WriterPreferences preferences,
+			String enumTypeName,
+			List<String> enumConstants) throws IOException {
+		writer.write("\n\n");
+		writer.write(format("export class %s {\n", enumTypeName + enumConstantValuesClassSufix));
+		preferences.increaseIndentation();
+		Iterator<String> iter2 = enumConstants.iterator();
+		while(iter2.hasNext()) {
+			String value = iter2.next();
+			writer.write(format("%sstatic %s: %s = \"%s\";\n",
+					preferences.getIndentation(),
+					value,
+					enumTypeName,
+					value
+			));
+		}
+		preferences.decreaseIndention();
+		writer.write(preferences.getIndentation() + "}");
 	}
 }
