@@ -31,6 +31,7 @@ public class ExpectedOutputChecker {
 	}
 
 	private static List<String> getLinesAlphabetically(String s) {
+		s = s.replace("\r", "");
 		List<String> lines = Lists.newArrayList(s.split("\\n"));
 		Collections.sort(lines);
 		return lines;
