@@ -68,12 +68,16 @@ public class EnumTypeToStringLiteralTypeWriter implements CustomAbstractTypeWrit
 			String value = iter2.next();
 			writer.write(format("%sstatic %s: %s = \"%s\";\n",
 					preferences.getIndentation(),
-					value,
+					getConstantName(value),
 					enumTypeName,
 					value
 			));
 		}
 		preferences.decreaseIndention();
 		writer.write(preferences.getIndentation() + "}");
+	}
+
+	String getConstantName(String value) {
+		return "name".equals(value) ? "name_" : value;
 	}
 }

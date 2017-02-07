@@ -18,6 +18,7 @@ export enum E {
 export enum Enum {
     VAL1,
     VAL2,
+    name,
 }
 
 export interface F {
