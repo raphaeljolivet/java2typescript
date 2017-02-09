@@ -68,8 +68,34 @@ export type MyEnum = "VAL1" | "VAl2" | "VAL3";
 ```
 
 This will keep strong-typing for the values, while allowing for string literal values of enum properties. Take a look at
-the [test that turns on this preference](src/test/java/java2typescript/jackson/module/WriterPreferencesTest.java#L67)
+the [test that turns on this preference](src/test/java/java2typescript/jackson/module/WriterPreferencesTest.java#L67).
 
+The `useStringLiteralTypeForEnums` method takes an optional boolean argument called `withConstants`. If this is set to `true`, two definitions will be generated from each java enum definition. So this:
+
+```Java
+class MyDto {
+    static enum MyEnum {
+        VAL1, VAl2, VAL3
+    }
+    public MyEnum myKey;
+}
+```
+
+Will generate this:
+
+```TypeScript
+export interface MyDto {
+    myKey: MyEnum;
+}
+export type MyEnum = "VAL1" | "VAl2" | "VAL3";
+export class MyEnumValues {
+    static VAL1: EnumOneValue = "VAL1";
+    static VAL2: EnumOneValue = "VAL2";
+    static VAL3: EnumOneValue = "VAL3";
+}
+```
+
+The reason for this feature is that prior to typescript v2.0.2, compile-time checks for string literal types were not exhaustive, resulting in certain situations where type-checking was unavailable (see discussion at [#68](https://github.com/raphaeljolivet/java2typescript/issues/68)). If you are using v2.0.2 or later, it is likely less helpful/necessary to enable this option.
 
 
 ### Mapping specific java classes to custom TypeScript types

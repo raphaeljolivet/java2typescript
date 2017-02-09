@@ -52,7 +52,9 @@ public class EnumTypeToStringLiteralTypeWriter implements CustomAbstractTypeWrit
 		}
 		preferences.decreaseIndention();
 
-		writeConstants(writer, preferences, enumTypeName, enumConstants);
+		if (preferences.isConstantsForStringLiteralTypeEnums()) {
+			writeConstants(writer, preferences, enumTypeName, enumConstants);
+		}
 	}
 
 	private void writeConstants(

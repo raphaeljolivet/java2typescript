@@ -13,19 +13,28 @@ public class WriterPreferences {
 
 	private List<CustomAbstractTypeWriter> customWriters = new ArrayList<CustomAbstractTypeWriter>();
 	private boolean useEnumPattern;
+	private boolean enumAsStringLiteralType = false;
+	private boolean constantsForStringLiteralTypeEnums = false;
+	/** sort types and vars in output */
+	private boolean sort;
 
 	public boolean isStringLiteralTypeForEnums() {
 		return enumAsStringLiteralType;
 	}
 
-	public void useStringLiteralTypeForEnums() {
-        addWriter(new EnumTypeToStringLiteralTypeWriter());
+	public void useStringLiteralTypeForEnums(boolean withConstants) {
+		addWriter(new EnumTypeToStringLiteralTypeWriter());
 		this.enumAsStringLiteralType = true;
+		this.constantsForStringLiteralTypeEnums = withConstants;
 	}
 
-	private boolean enumAsStringLiteralType;
-	/** sort types and vars in output */
-	private boolean sort;
+	public void useStringLiteralTypeForEnums() {
+		useStringLiteralTypeForEnums(false);
+	}
+
+	public boolean isConstantsForStringLiteralTypeEnums() {
+		return this.constantsForStringLiteralTypeEnums;
+	}
 	
 	public void useEnumPattern() {
 		addWriter(new EnumTypeToEnumPatternWriter());
