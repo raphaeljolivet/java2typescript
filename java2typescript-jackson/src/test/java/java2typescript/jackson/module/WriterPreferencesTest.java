@@ -84,6 +84,24 @@ public class WriterPreferencesTest {
 	}
 
 	@Test
+	public void enumToStringLiteralTypeWithConstants() throws IOException {
+		// Arrange
+		ExternalModuleFormatWriter mWriter = new ExternalModuleFormatWriter();
+		mWriter.preferences.useStringLiteralTypeForEnums(true);
+
+		Module module = TestUtil.createTestModule(null, Enum.class, EnumOneValue.class);
+		Writer out = new StringWriter();
+
+		// Act
+		mWriter.write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		ExpectedOutputChecker.checkOutputFromFile(out);
+	}
+
+	@Test
 	public void enumPatternBaseNotAddedWhenNotNeeded() throws IOException {
 		// Arrange
 		ExternalModuleFormatWriter mWriter = new ExternalModuleFormatWriter();
