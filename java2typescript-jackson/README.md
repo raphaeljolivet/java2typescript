@@ -7,6 +7,9 @@ Java classes are converted to TypeScript interfaces.
 ### Module (generated output) format
 TypeScript has a concept of [internal](http://www.typescriptlang.org/Handbook#modules) and [external](http://www.typescriptlang.org/Handbook#modules-going-external) modules, that have slightly different formats (see the test output for [internal](src/test/resources/java2typescript/jackson/module/DefinitionGeneratorTest.internalModuleFormat.d.ts) vs [external](src/test/resources/java2typescript/jackson/module/DefinitionGeneratorTest.externalModuleFormat.d.ts) module format). By default, internal module format is used (that adds one line before and after content of external module format). To write in the external module format, use the `ExternalModuleFormatWriter` class (see [the test for an example](src/test/java/java2typescript/jackson/module/DefinitionGeneratorTest.java#L85-L97)).
 
+A third option is to use the `AmbientdModuleFormatWriter`, which behaves much like the `InternalModuleFormatWriter`, except it uses `declare module ...` on the outer wrapping module instead of `export module ...`. This is called an "ambient" module in TypeScript lingo. For more information, see the [typescript docs on modules](https://www.typescriptlang.org/docs/handbook/modules.html).
+
+>NOTE: A note about terminology: It's important to note that in TypeScript 1.5, the nomenclature has changed. "Internal modules" are now "namespaces". "External modules" are now simply "modules", as to align with ECMAScript 2015's terminology, (namely that module X { is equivalent to the now-preferred namespace X {).
 
 ### Ignored methods
 When generating TypeScript from Java classes <sup>(actually when Java classes are analysed)</sup>, some methods are excluded:
