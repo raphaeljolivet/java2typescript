@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
+import java2typescript.jackson.module.writer.AmbientModuleFormatWriter;
 import org.junit.Test;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -113,6 +114,21 @@ public class DefinitionGeneratorTest {
 
 		// Act
 		new ExternalModuleFormatWriter().write(module, out);
+		out.close();
+		System.out.println(out);
+
+		// Assert
+		ExpectedOutputChecker.checkOutputFromFile(out);
+	}
+
+	@Test
+	public void ambientModuleFormat() throws IOException {
+		// Arrange
+		Module module = createTestModule();
+		Writer out = new StringWriter();
+
+		// Act
+		new AmbientModuleFormatWriter().write(module, out);
 		out.close();
 		System.out.println(out);
 
