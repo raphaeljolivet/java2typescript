@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java2typescript.jackson.module.grammar.AnyType;
 import java2typescript.jackson.module.grammar.FunctionType;
 import java2typescript.jackson.module.grammar.ClassType;
+import java2typescript.jackson.module.grammar.TypeDeclarationType;
 import java2typescript.jackson.module.grammar.VoidType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
@@ -161,6 +162,10 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 
 		AbstractType customType = conf.getCustomTypes().get(type.getRawClass().getName());
 		if(customType != null) {
+			if(customType instanceof TypeDeclarationType) {
+				TypeDeclarationType tdt = (TypeDeclarationType) customType;
+				getModule().getNamedTypes().put(tdt.getName(), tdt);
+			}
 			return customType;
 		}
 

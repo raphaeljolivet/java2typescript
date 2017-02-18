@@ -16,11 +16,16 @@
 package java2typescript.jackson.module;
 
 import java.util.Collection;
-import java2typescript.jackson.module.grammar.Module;
-import java2typescript.jackson.module.visitors.TSJsonFormatVisitorWrapper;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.SimpleType;
+
+import java2typescript.jackson.module.grammar.Module;
+import java2typescript.jackson.module.grammar.TypeDeclarationType;
+import java2typescript.jackson.module.grammar.base.AbstractType;
+import java2typescript.jackson.module.visitors.TSJsonFormatVisitorWrapper;
 
 /**
  * Main class that generates a TypeScript grammar tree (a Module), out of a
@@ -51,6 +56,15 @@ public class DefinitionGenerator {
 		TSJsonFormatVisitorWrapper visitor = new TSJsonFormatVisitorWrapper(module, conf);
 
 		for (Class<?> clazz : classes) {
+			AbstractType customType = conf.getCustomTypes().get(clazz.getName());
+			if(customType != null && customType instanceof TypeDeclarationType) {
+				// When the class is registered as TypeDeclarationType, then ...
+				String tsTypeName = conf.getNamingStrategy().getName(SimpleType.construct(clazz));
+				// ... add that type to the module ...
+				module.getNamedTypes().put(tsTypeName, (TypeDeclarationType)customType);
+				// ... instead of inspecting class body
+				continue;
+			}
 			mapper.acceptJsonFormatVisitor(clazz, visitor);
 		}
 		return module;
