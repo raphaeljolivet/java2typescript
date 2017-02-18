@@ -131,3 +131,23 @@ new Configuration().addType(CustomDate.class, DateType.getInstance())
 
 where `DateType` class specifies the expected output type name.
 
+
+##### Emitting `declare type SomeTypeName = SomeOtherTypeOrTypeExpression` instead of interface
+There are cases where instead of asking to emit TypeScript interface for specific Java type,
+You might want to specify the TypeScript type declaration
+(with potentially different type name)
+to be used instead of the interface of the Java type. Here is an example:
+
+You might have `LocalDate` class in Java, and custom deserializer that can accept either string or number, so that in TypeScript You should be able to assign either of them to that type:
+```TypeScript
+type DateWithoutTime = string | number;
+```
+This could be accomplished using custom configuration:
+```Java
+Configuration conf = new Configuration()
+	.addType(LocalDate.class, new TypeDeclarationType("DateWithoutTime", "string | number"));
+```
+There are more use-cases for this solution - see
+[the description of the issue](https://github.com/raphaeljolivet/java2typescript/issues/76)
+and the test [source](src/test/java/java2typescript/jackson/module/CustomTypeDefinitionGeneratorTest.java#L82)
+and [output](src/test/resources/java2typescript/jackson/module/CustomTypeDefinitionGeneratorTest.classWithCustomTypeFields.d.ts) as an example.
