@@ -29,9 +29,17 @@ public class MapType extends AbstractType {
 
 	@Override
 	public void write(Writer writer) throws IOException {
-		writer.write("{ [key: ");
-		keyType.write(writer);
-		writer.write(" ]: ");
+		// TODO: only use this "key in <ENUM>" syntax when useStringLiteralTypeForEnums is enabled.
+		if (keyType instanceof EnumType) {
+			writer.write("{ [key in ");
+			keyType.write(writer);
+			writer.write(" ] ? : ");
+		} else {
+			writer.write("{ [key: ");
+			keyType.write(writer);
+			writer.write(" ]: ");
+		}
+
 		valueType.write(writer);
 		writer.write(";}");
 	}

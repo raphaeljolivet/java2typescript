@@ -5,6 +5,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -43,6 +44,10 @@ public class WriterPreferencesTest {
 		public static final String MY_CONSTANT_STRING = "stringValue";
 		public static final boolean MY_CONSTANT_BOOLEAN = true;
 	}
+
+	static class TestClassHasMapWithEnumKey {
+		public Map<Enum, String> enumKeyMap;
+	}
 	
 	enum E{B,C,A}
 
@@ -71,7 +76,7 @@ public class WriterPreferencesTest {
 		ExternalModuleFormatWriter mWriter = new ExternalModuleFormatWriter();
 		mWriter.preferences.useStringLiteralTypeForEnums();
 
-		Module module = TestUtil.createTestModule(null, Enum.class, EnumOneValue.class);
+		Module module = TestUtil.createTestModule(null, Enum.class, EnumOneValue.class, TestClassHasMapWithEnumKey.class);
 		Writer out = new StringWriter();
 
 		// Act
