@@ -15,12 +15,15 @@ mvn java2typescript:generate
 
 Here are the parameters handled by the plugin
 
-| Name           | Expression        | Default value              | Meaning                  | 
-|----------------|-------------------|----------------------------|--------------------------|
-| serviceClass   | j2ts.serviceClass |  -                         | Class of REST service    |
-| moduleName     | j2ts.moduleName   |  -                         | Name of output module    |
-| tsOutFolder    | j2ts.tsOutFolder  | ${project.build.directory} | Output folder for ts file|
-| jsOutFolder    | j2ts.jsOutFolder  | ${project.build.directory} | Output folder for js file|
+| Name                          | Expression                           | Default value              | Meaning                                     |
+|----------------------------------------------------------------------|----------------------------|---------------------------------------------|
+| serviceClasses                | j2ts.serviceClasses                  |  -                         | List of REST service classes                |
+| serviceClassPackages          | j2ts.serviceClassPackages            | []                         | List of REST service packages               |
+| serviceClassPatterns          | j2ts.serviceClassPatterns            | [".*"]                     | Regex pattern to select services to parse   |
+| excludedServiceClassPatterns  | j2ts.excludedServiceClassPatterns    | []                         | Regex paterns to select services to exclude |
+| moduleName                    | j2ts.moduleName                      |  -                         | Name of output module                       |
+| tsOutFolder                   | j2ts.tsOutFolder                     | ${project.build.directory} | Output folder for ts file                   |
+| jsOutFolder                   | j2ts.jsOutFolder                     | ${project.build.directory} | Output folder for js file                   |
 
 By default the two files will be generated as :
 * `<tsOutFolder>/<moduleName>.d.ts`

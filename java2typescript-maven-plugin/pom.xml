@@ -110,6 +110,12 @@
       <version>1.3.8</version>
     </dependency>
     <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.10</version>
+    </dependency>
+
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>java2typescript-jaxrs</artifactId>
       <version>${project.version}</version>
