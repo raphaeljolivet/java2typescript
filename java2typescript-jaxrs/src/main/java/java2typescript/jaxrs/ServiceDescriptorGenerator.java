@@ -31,6 +31,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import java2typescript.jackson.module.Configuration;
 import java2typescript.jackson.module.DefinitionGenerator;
 import java2typescript.jackson.module.grammar.AnyType;
 import java2typescript.jackson.module.grammar.ClassType;
@@ -85,14 +87,21 @@ public class ServiceDescriptorGenerator {
 
 	private ObjectMapper mapper;
 
+	private Configuration conf;
+
 	public ServiceDescriptorGenerator(Collection<? extends Class<?>> classes) {
 		this(classes, new ObjectMapper());
 	}
 
 	public ServiceDescriptorGenerator(Collection<? extends Class<?>> classes, ObjectMapper mapper) {
+		this(classes,mapper, null);
+	}
+
+	public ServiceDescriptorGenerator(Collection<? extends Class<?>> classes, ObjectMapper mapper, Configuration conf) {
 		this.classes = classes;
 		this.mapper = mapper;
 		addDummyMappingForJAXRSClasses();
+		this.conf = conf;
 	}
 
 	private class DummySerializer extends JsonSerializer<Object> {
@@ -153,7 +162,11 @@ public class ServiceDescriptorGenerator {
 
 		// Generates Typescript module out of service classses definition
 		DefinitionGenerator defGen = new DefinitionGenerator(mapper);
-		Module module = defGen.generateTypeScript(moduleName, classes, null);
+		if (conf == null) {
+			conf = new Configuration();
+			conf.setJaxrsRun(true);
+		}
+		Module module = defGen.generateTypeScript(moduleName, classes, conf);
 
 		// For each rest service, update methods with parameter names, got from Rest service descriptor 
 		for (RestService restService : generateRestServices(classes)) {

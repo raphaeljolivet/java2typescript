@@ -13,10 +13,16 @@ import java2typescript.jackson.module.conf.typename.TSTypeNamingStrategy;
 import java2typescript.jackson.module.grammar.ArrayType;
 import java2typescript.jackson.module.grammar.base.AbstractType;
 
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+
 public class Configuration {
 	private Map<String, AbstractType> customTypes = Collections.emptyMap();
 	private List<String> ignoredMethodNames = new ArrayList<String>();
 	private TSTypeNamingStrategy namingStrategy = new SimpleJacksonTSTypeNamingStrategy();
+	private boolean jaxrsRun = false;
 
 	public Map<String, AbstractType> getCustomTypes() {
 		return customTypes;
@@ -60,5 +66,23 @@ public class Configuration {
 
 	public void setNamingStrategy(TSTypeNamingStrategy namingStrategy) {
 		this.namingStrategy = namingStrategy;
+	}
+
+	public boolean getJaxrsRun() {
+		return jaxrsRun;
+	}
+
+	public void setJaxrsRun(boolean bool) {
+		jaxrsRun = bool;
+	}
+
+	public boolean methodHasHTTPAnnotation(Method method) {
+		if (method.getAnnotation(GET.class) != null ||
+				method.getAnnotation(POST.class) != null ||
+				method.getAnnotation(PUT.class) != null ||
+				method.getAnnotation(DELETE.class) != null) {
+			return true;
+		}
+		return false;
 	}
 }
