@@ -24,6 +24,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.Transient;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import java2typescript.jackson.module.grammar.AnyType;
 import java2typescript.jackson.module.grammar.FunctionType;
 import java2typescript.jackson.module.grammar.ClassType;
@@ -35,7 +39,6 @@ import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
@@ -51,6 +54,7 @@ import java2typescript.jackson.module.Configuration;
 public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassType> implements JsonObjectFormatVisitor {
 
 	private Class clazz;
+	private List<String> blackListField = new ArrayList<String>();
 
 	public TSJsonObjectFormatVisitor(ABaseTSJsonFormatVisitor<?> parentHolder, String className, Class clazz, Configuration conf) {
 		super(parentHolder, conf);
@@ -59,7 +63,9 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 	}
 
 	private void addField(String name, AbstractType fieldType) {
-		type.getFields().put(name, fieldType);
+        if (!blackListField.contains(name)) {
+            type.getFields().put(name, fieldType);
+        }
 	}
 
 	private boolean isAccessorMethod(Method method, BeanInfo beanInfo) {
@@ -74,12 +80,37 @@ public class TSJsonObjectFormatVisitor extends ABaseTSJsonFormatVisitor<ClassTyp
 		return false;
 	}
 
+	private void blackListUnnecessaryFieldMethods(Method method) {
+        Pattern getSearcher = Pattern.compile("^get.*");
+        Pattern setSearcher = Pattern.compile("^set.*");
+
+        String methodName = method.getName();
+        String ignoredField;
+
+        if (getSearcher.matcher(method.getName()).matches()) {
+            ignoredField = methodName.replaceFirst("^get","");
+            ignoredField = Introspector.decapitalize(ignoredField);
+            blackListField.add(ignoredField);
+        } else if (setSearcher.matcher(method.getName()).matches()) {
+            ignoredField = methodName.replaceFirst("^set","");
+			ignoredField = Introspector.decapitalize(ignoredField);
+            blackListField.add(ignoredField);
+        }
+    }
+
 	void addPublicMethods() {
 
 		for (Method method : this.clazz.getDeclaredMethods()) {
 
 			// Only public
 			if (!isPublic(method.getModifiers())) {
+				continue;
+			}
+
+            //Don't exclude accessors with HTTP Annotations
+			if (conf.getJaxrsRun() && conf.methodHasHTTPAnnotation(method)) {
+				addMethod(method);
+				blackListUnnecessaryFieldMethods(method);
 				continue;
 			}
 

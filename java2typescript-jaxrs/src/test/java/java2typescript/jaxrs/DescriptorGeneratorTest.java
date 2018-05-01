@@ -46,7 +46,7 @@ public class DescriptorGeneratorTest {
 	}
 
 	@Path("/")
-	static private interface ExampleService {
+	class ExampleService {
 
 		@Path("/{id}")
 		@POST
@@ -54,7 +54,9 @@ public class DescriptorGeneratorTest {
 				@QueryParam("q1") String queryParam, //
 				@PathParam("id") String id, //
 				@FormParam("formParam") Integer formParam, //
-				String postPayload);
+				String postPayload){
+			return "test";
+		}
 
 		@Path("/{id}")
 		@GET
@@ -62,7 +64,21 @@ public class DescriptorGeneratorTest {
 				@QueryParam("q1") String queryParam, //
 				@PathParam("id") String id, //
 				@FormParam("formParam") Integer formParam, //
-				MyObject postPayload);
+				MyObject postPayload){
+
+		}
+
+		@Path("/random")
+		@GET
+		public int getRandom() {
+			return 4;
+		}
+
+		@Path("/multi")
+		@GET
+		public int getMultiWordGetter() {
+			return 3;
+		}
 
 	}
 
@@ -83,6 +99,21 @@ public class DescriptorGeneratorTest {
 
 		ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(
 				Collections.singletonList(PeopleRestService.class));
+
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule("custom-mapping");
+
+		mapper.registerModule(module);
+
+		Module tsModule = descGen.generateTypeScript("modName");
+		tsModule.write(out);
+	}
+
+	@Test
+	public void testTypescriptGenerateWithExample() throws JsonGenerationException, JsonMappingException, IOException {
+
+		ServiceDescriptorGenerator descGen = new ServiceDescriptorGenerator(
+				Collections.singletonList(ExampleService.class));
 
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule("custom-mapping");
